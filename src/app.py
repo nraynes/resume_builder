@@ -1,11 +1,12 @@
 from src.controllers.AppController import AppController
 from src.controllers.GUIController import GUIController
 
-class App:
+
+class App(AppController, GUIController):
     def __init__(self):
-        self.app_controller = AppController()
-        self.gui_controller = GUIController()
+        super(AppController, self).__init__()
+        super(GUIController, self).__init__()
+
 
 app = App()
-
-app.gui_controller.startGUI()
+app.startGUI()
