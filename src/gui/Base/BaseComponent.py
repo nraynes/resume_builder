@@ -1,4 +1,4 @@
-from src.gui.components.BaseFrame import BaseFrame
+from src.gui.Base.BaseFrame import BaseFrame
 
 
 class BaseComponent(BaseFrame):

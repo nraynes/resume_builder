@@ -1,0 +1,16 @@
+import tkinter as tk
+from src.gui.Base.BaseComponent import BaseComponent
+
+
+class SummaryForm(BaseComponent):
+    def __init__(self, master):
+        self._frame = tk.Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
+        lbl_summary = tk.Label(self._frame, text="Summary", font=("Helvetica", 18, "bold"))
+        self._txt_summary = tk.Text(self._frame, borderwidth=1, relief="solid")
+        lbl_summary.grid(row=0, sticky="EW")
+        self.spacing().grid(row=1)
+        self._txt_summary.grid(row=2)
+
+    @property
+    def txtSummary(self):
+        return self._txt_summary

@@ -1,12 +1,16 @@
 import tkinter as tk
-from src.gui.components.BaseFrame import BaseFrame
+from src.gui.Base.BaseWindow import BaseWindow
+from src.gui.components.ResumeEditor.ResumeEditor import ResumeEditor
 
 
-class EditorWindow(BaseFrame):
-    def __init__(self, master):
+class EditorWindow(BaseWindow):
+    def __init__(self, master, openMainCb, show: bool = True):
         self._frame = tk.Frame(master, padx=10, pady=10)
-        self._frame.pack(anchor="center", expand=True)
+        self._frm_resume = ResumeEditor(self._frame, openMainCb)
+        self._frm_resume.pack()
+        if show:
+            self.show()
 
-    def addSpacing(self):
-        spacing = tk.Frame(self._frame, height=5)
-        spacing.pack()
+    @property
+    def frmResume(self):
+        return self._frm_resume

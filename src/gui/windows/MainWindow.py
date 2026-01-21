@@ -1,34 +1,40 @@
 import tkinter as tk
-from src.gui.components.BaseFrame import BaseFrame
+from tkinter import ttk
+from src.gui.Base.BaseWindow import BaseWindow
 from src.gui.components.NewResumeForm import NewResumeForm
 from src.gui.components.PickResumeList import PickResumeList
 
 
-class MainWindow(BaseFrame):
-    def __init__(self, master):
+class MainWindow(BaseWindow):
+
+    def __init__(self, master, openEditorCb, show: bool = True):
         self._frame = tk.Frame(master, padx=10, pady=10)
-        self._btn_open_cv = tk.Button(self._frame, text="View/Edit CV")
+        self.openEditor = openEditorCb
+        self._btn_open_cv = ttk.Button(self._frame, text="View/Edit CV", command=self.openCv)
         self._btn_open_cv.pack()
-        self.addSpacing()
+        self.spacing().pack()
         self._frm_new_resume = NewResumeForm(self._frame)
         self._frm_new_resume.pack()
-        self.addSpacing()
+        self.spacing().pack()
         self._lst_pick_resume = PickResumeList(self._frame)
         self._lst_pick_resume.pack()
-        self._frame.pack(anchor="center", expand=True)
+        if show:
+            self.show()
 
-    def addSpacing(self):
-        spacing = tk.Frame(self._frame, height=5)
-        spacing.pack()
-    
+    def openCv(self):
+        self.openEditor()
+
+    def openResume(self):
+        self.openEditor()
+
     @property
     def btnOpenCv(self):
         return self._btn_open_cv
-    
+
     @property
     def frmNewResume(self):
         return self._frm_new_resume
-    
+
     @property
     def lstPickResume(self):
         return self._lst_pick_resume

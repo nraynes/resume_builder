@@ -1,5 +1,5 @@
 import tkinter as tk
-from src.gui.components.BaseComponent import BaseComponent
+from src.gui.Base.BaseComponent import BaseComponent
 
 
 class PDFPreview(BaseComponent):
