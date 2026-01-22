@@ -1,9 +1,12 @@
-from src.gui.Base.BaseFrame import BaseFrame
+from src.gui.base.BaseFrame import BaseFrame
+from abc import ABC, abstractmethod
 
 
-class BaseWindow(BaseFrame):
+class BaseWindow(BaseFrame, ABC):
+    @abstractmethod
     def show(self):
-        self._frame.pack(anchor="center", expand=True)
+        pass
 
+    @abstractmethod
     def hide(self):
-        self._frame.pack_forget()
+        pass

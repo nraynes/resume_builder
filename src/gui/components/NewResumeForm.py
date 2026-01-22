@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from src.gui.components.ResumeEditor.ResumeMetaDataForm import ResumeMetaDataForm
+from src.gui.components.ResumeEditor.subcomponents.ResumeMetaDataForm import ResumeMetaDataForm
 
 
 class NewResumeForm(ResumeMetaDataForm):

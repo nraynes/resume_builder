@@ -1,10 +1,13 @@
 import tkinter as tk
-from src.gui.Base.BaseComponent import BaseComponent
-from src.gui.components.ResumeEditor.ResumeMetaDataForm import ResumeMetaDataForm
-from src.gui.components.ResumeEditor.HeaderForm import HeaderForm
-from src.gui.components.ResumeEditor.ButtonPanel import ButtonPanel
-from src.gui.components.ResumeEditor.SummaryForm import SummaryForm
-from src.gui.components.ResumeEditor.SkillsForm import SkillsForm
+from src.gui.base.BaseComponent import BaseComponent
+from src.gui.components.ResumeEditor.subcomponents.ResumeMetaDataForm import ResumeMetaDataForm
+from src.gui.components.ResumeEditor.subcomponents.HeaderForm import HeaderForm
+from src.gui.components.ResumeEditor.subcomponents.ButtonPanel import ButtonPanel
+from src.gui.components.ResumeEditor.subcomponents.SummaryForm import SummaryForm
+from src.gui.components.ResumeEditor.subcomponents.SkillsForm import SkillsForm
+from src.gui.components.ResumeEditor.subcomponents.EducationForm import EducationForm
+from src.gui.components.ResumeEditor.subcomponents.ExperienceForm import ExperienceForm
+from src.gui.components.ResumeEditor.subcomponents.CertificationsForm import CertificationsForm
 
 
 class ResumeEditor(BaseComponent):
@@ -36,6 +39,19 @@ class ResumeEditor(BaseComponent):
         self.spacing(layer_three).grid(row=0, column=1)
         self._frm_skills.grid(row=0, column=2, sticky="NSEW")
         layer_three.pack(fill=tk.BOTH)
+        self.spacing().pack()
+
+        # Build fourth layer.
+        layer_four = tk.Frame(self._frame)
+        self._frm_experience = ExperienceForm(layer_four)
+        self._frm_education = EducationForm(layer_four)
+        self._frm_certifications = CertificationsForm(layer_four)
+        self._frm_experience.grid(row=0, column=0, sticky="EW")
+        self.spacing(layer_four).grid(row=0, column=1)
+        self._frm_education.grid(row=0, column=2, sticky="EW")
+        self.spacing(layer_four).grid(row=0, column=3)
+        self._frm_certifications.grid(row=0, column=4, sticky="EW")
+        layer_four.pack(fill=tk.BOTH)
 
     @property
     def frmMetaData(self):
@@ -46,5 +62,21 @@ class ResumeEditor(BaseComponent):
         return self._frm_header
 
     @property
-    def txtSummary(self):
-        return self._txt_summary
+    def frmSummary(self):
+        return self._frm_summary
+
+    @property
+    def frmSkills(self):
+        return self._frm_skills
+
+    @property
+    def frmExperience(self):
+        return self._frm_experience
+
+    @property
+    def frmEducation(self):
+        return self._frm_education
+
+    @property
+    def frmCertifications(self):
+        return self._frm_certifications

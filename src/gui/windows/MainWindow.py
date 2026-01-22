@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from src.gui.Base.BaseWindow import BaseWindow
+from src.gui.base.BaseWindow import BaseWindow
 from src.gui.components.NewResumeForm import NewResumeForm
 from src.gui.components.PickResumeList import PickResumeList
 
@@ -20,6 +20,12 @@ class MainWindow(BaseWindow):
         self._lst_pick_resume.pack()
         if show:
             self.show()
+
+    def show(self):
+        self._frame.pack(anchor="center", expand=True)
+
+    def hide(self):
+        self._frame.pack_forget()
 
     def openCv(self):
         self.openEditor()

@@ -1,4 +1,4 @@
-from src.gui.Base.BaseComponent import BaseComponent
+from src.gui.base.BaseComponent import BaseComponent
 import tkinter as tk
 
 

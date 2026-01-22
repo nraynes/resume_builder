@@ -1,6 +1,6 @@
 import tkinter as tk
 from src.gui.components.LabeledInput import LabeledInput
-from src.gui.Base.BaseComponent import BaseComponent
+from src.gui.base.BaseComponent import BaseComponent
 
 
 class HeaderForm(BaseComponent):

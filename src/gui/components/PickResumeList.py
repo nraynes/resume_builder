@@ -1,6 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
-from src.gui.Base.BaseComponent import BaseComponent
+from src.gui.base.BaseComponent import BaseComponent
 
 
 class PickResumeList(BaseComponent):
