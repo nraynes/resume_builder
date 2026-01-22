@@ -3,10 +3,11 @@ from tkinter import ttk
 import platform
 from src.gui.base.BaseWindow import BaseWindow
 from src.gui.components.ResumeEditor.ResumeEditor import ResumeEditor
+from src.models.Cv import Cv
 
 
 class EditorWindow(BaseWindow):
-    def __init__(self, master: tk.Tk, openMainCb, show: bool = True):
+    def __init__(self, master: tk.Tk, openMainCb):
         self._canvas = tk.Canvas(master)
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
@@ -16,15 +17,16 @@ class EditorWindow(BaseWindow):
         self._canvas.bind("<Configure>", self._on_canvas_configure)
         self._win_id = self._canvas.create_window((0, 0), window=self._frame, anchor="nw")
         self._canvas.configure(yscrollcommand=self._scroll_bar.set)
-        self._frm_resume = ResumeEditor(self._frame, openMainCb)
-        self._frm_resume.pack()
+        self._edt_resume = ResumeEditor(self._frame, openMainCb)
+        self._edt_resume.pack()
         self._canvas.update_idletasks()
         self._resize_canvas()
         self._canvas.bind_all("<MouseWheel>", self.on_mousewheel)
         self._canvas.bind_all("<Button-4>", self.on_mousewheel)
         self._canvas.bind_all("<Button-5>", self.on_mousewheel)
-        if show:
-            self.show()
+        
+    def populateData(self, resume: Cv):
+        self._edt_resume.populateData(resume)
 
     def on_mousewheel(self, event):
         """Handles vertical scrolling across different platforms."""
@@ -61,7 +63,7 @@ class EditorWindow(BaseWindow):
 
     @property
     def frmResume(self):
-        return self._frm_resume
+        return self._edt_resume
 
     def hide(self):
         self._scroll_bar.pack_forget()

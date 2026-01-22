@@ -1,4 +1,6 @@
 import tkinter as tk
+from src.models.Cv import Cv
+from src.models.Resume import Resume
 from src.gui.base.BaseComponent import BaseComponent
 from src.gui.components.ResumeEditor.subcomponents.ResumeMetaDataForm import ResumeMetaDataForm
 from src.gui.components.ResumeEditor.subcomponents.HeaderForm import HeaderForm
@@ -52,6 +54,18 @@ class ResumeEditor(BaseComponent):
         self.spacing(layer_four).grid(row=0, column=3)
         self._frm_certifications.grid(row=0, column=4, sticky="EW")
         layer_four.pack(fill=tk.BOTH)
+
+    def populateData(self, resume: Cv):
+        is_resume = isinstance(resume, Resume)
+        title = resume.title if is_resume else "Curriculum Vitae"
+        author = resume.author if is_resume else "N/A"
+        self._frm_meta_data.populateData(title, author)
+        self._frm_header.populateData(resume.header)
+        self._frm_summary.populateData(resume.summary)
+        self._frm_skills.populateData(resume.skills)
+        self._frm_experience.populateData(resume.workExperience.values())
+        self._frm_education.populateData(resume.education.values())
+        self._frm_certifications.populateData(resume.certificates.values())
 
     @property
     def frmMetaData(self):

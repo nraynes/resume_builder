@@ -1,8 +1,8 @@
 import tkinter as tk
 from tkinter import ttk
 from src.gui.base.BaseComponent import BaseComponent
-from src.gui.components.LabeledInput import LabeledInput
-from src.gui.components.LabeledDateInput import LabeledDateInput
+from src.gui.lib.LabeledInput import LabeledInput
+from src.gui.lib.LabeledDateInput import LabeledDateInput
 
 
 class CertificationsEditor(BaseComponent):

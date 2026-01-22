@@ -10,6 +10,10 @@ class SummaryForm(BaseComponent):
         lbl_summary.grid(row=0, sticky="EW")
         self.spacing().grid(row=1)
         self._txt_summary.grid(row=2)
+        
+    def populateData(self, summary: str):
+        self._txt_summary.delete("1.0", tk.END)
+        self._txt_summary.insert(tk.END, summary)
 
     @property
     def txtSummary(self):

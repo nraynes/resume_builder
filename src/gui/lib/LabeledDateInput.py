@@ -1,6 +1,6 @@
 from src.gui.base.BaseComponent import BaseComponent
 import tkinter as tk
-from src.gui.components.DateEntry import DateEntry
+from src.gui.lib.DateEntry import DateEntry
 
 
 class LabeledDateInput(BaseComponent):

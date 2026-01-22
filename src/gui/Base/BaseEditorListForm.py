@@ -1,4 +1,3 @@
-import tkinter as tk
 from tkinter import ttk
 from src.gui.base.BaseListForm import BaseListForm
 from abc import abstractmethod

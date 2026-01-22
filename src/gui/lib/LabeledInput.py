@@ -13,6 +13,16 @@ class LabeledInput(BaseComponent):
         
         lbl.grid(row=0, sticky="E")
         self._inp.grid(row=0, column=1, sticky="EW")
+        
+    def get(self):
+        return self._inp.get()
+    
+    def clear(self):
+        self._inp.delete(0, tk.END)
+        
+    def setValue(self, text: str):
+        self.clear()
+        self._inp.insert(0, text)
 
     @property
     def inp(self):

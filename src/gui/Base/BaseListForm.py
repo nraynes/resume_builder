@@ -1,11 +1,14 @@
 import tkinter as tk
 from tkinter import ttk
 from src.gui.base.BaseComponent import BaseComponent
+from src.gui.base.BaseListItem import BaseListItem
+from src.gui.lib.Listbox import Listbox
 from abc import ABC, abstractmethod
 
 
 class BaseListForm(BaseComponent, ABC):
     _heading: str
+    _items: list[BaseListItem]
 
     def __init__(self, master):
         self._frame = tk.Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
@@ -17,7 +20,8 @@ class BaseListForm(BaseComponent, ABC):
         lbl_heading = tk.Label(
             self._frame, text=self._heading, font=("Helvetica", 18, "bold")
         )
-        self._lst_items = tk.Listbox(self._frame)
+        self._items = []
+        self._lst_items = Listbox(self._frame)
         self._btn_delete = ttk.Button(self._frame, text="Delete", command=self.cmdDelete)
         self._btn_add = ttk.Button(self._frame, text="Add", command=self.cmdAdd)
 
@@ -29,6 +33,35 @@ class BaseListForm(BaseComponent, ABC):
         self.spacing().grid(row=4, column=1)
         self.spacing().grid(row=4, column=3)
         self._btn_add.grid(row=4, column=4, sticky="EW")
+        
+    def clear(self):
+        self._items = []
+        self.updateList()
+        
+    def item(self, index: int):
+        for item in self._items:
+            print(f"{item.id} | {item.text} | {item.item}")
+            if item.id == index:
+                return item
+        return None
+        
+    def selectedItem(self):
+        selected_index = self._lst_items.selected_index()
+        if selected_index is not None:
+            item = self.item(selected_index)
+            if item is not None:
+                return item.item
+        return None
+
+    def addItem(self, item, text: str = ""):
+        self._items.append(BaseListItem(item, text=text))
+        self.updateList()
+
+    def updateList(self):
+        self._lst_items.clear()
+        for item in self._items:
+            item.id = self._lst_items.add(item.text)
+            
 
     @property
     def lstItems(self):

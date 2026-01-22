@@ -6,6 +6,12 @@ class Resume(Cv):
         self._title = title
         self._author = author
         super().__init__(*args, **kwargs)
+        
+    def to_dict(self):
+        cv = super().to_dict()
+        cv["title"] = self._title
+        cv["author"] = self._author
+        return cv
 
     @property
     def title(self):

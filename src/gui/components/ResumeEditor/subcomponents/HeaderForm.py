@@ -1,6 +1,7 @@
 import tkinter as tk
-from src.gui.components.LabeledInput import LabeledInput
+from src.gui.lib.LabeledInput import LabeledInput
 from src.gui.base.BaseComponent import BaseComponent
+from src.models.Header import Header
 
 
 class HeaderForm(BaseComponent):
@@ -31,6 +32,17 @@ class HeaderForm(BaseComponent):
         self._inp_country.grid(row=4, column=1, sticky="EW")
         self._inp_website.grid(row=2, column=2, sticky="EW")
         self._inp_alt_website.grid(row=3, column=2, sticky="EW")
+
+    def populateData(self, header: Header):
+        self._inp_name.setValue(header.name)
+        self._inp_profession.setValue(header.profession)
+        self._inp_email.setValue(header.email)
+        self._inp_phone_number.setValue(header.phoneNumber)
+        self._inp_city.setValue(header.city)
+        self._inp_state.setValue(header.state)
+        self._inp_country.setValue(header.country)
+        self._inp_website.setValue(header.website)
+        self._inp_alt_website.setValue(header.altWebsite)
 
     @property
     def inpName(self):
