@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import platform
 from src.gui.base.BaseWindow import BaseWindow
 from src.gui.components.ResumeEditor.ResumeEditor import ResumeEditor
 
@@ -19,8 +20,27 @@ class EditorWindow(BaseWindow):
         self._frm_resume.pack()
         self._canvas.update_idletasks()
         self._resize_canvas()
+        self._canvas.bind_all("<MouseWheel>", self.on_mousewheel)
+        self._canvas.bind_all("<Button-4>", self.on_mousewheel)
+        self._canvas.bind_all("<Button-5>", self.on_mousewheel)
         if show:
             self.show()
+
+    def on_mousewheel(self, event):
+        """Handles vertical scrolling across different platforms."""
+        os_name = platform.system()
+        if os_name == "Windows":
+            # Windows uses <MouseWheel> and event.delta is +/- 120
+            self._canvas.yview_scroll(int(-1 * (event.delta / 120)), "units")
+        elif os_name == "Darwin":
+            # macOS uses <MouseWheel> with dynamic delta values
+            self._canvas.yview_scroll(int(-1 * event.delta), "units")
+        else:
+            # X11 (Linux) uses <Button-4> for up and <Button-5> for down
+            if event.num == 4:
+                self._canvas.yview_scroll(-1, "units")
+            elif event.num == 5:
+                self._canvas.yview_scroll(1, "units")
 
     def _resize_canvas(self):
         x1, y1, x2, y2 = self._canvas.bbox("all")
