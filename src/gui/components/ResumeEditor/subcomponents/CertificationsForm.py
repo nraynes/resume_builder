@@ -21,4 +21,8 @@ class CertificationsForm(BaseEditorListForm):
         pass
 
     def cmdEdit(self):
-        self._sub_window = CertificationsWindow(self._frame)
+        selected_certificate = self.selectedItem()
+        if selected_certificate:
+            self._sub_window = CertificationsWindow(
+                self._frame, certificate=selected_certificate
+            )

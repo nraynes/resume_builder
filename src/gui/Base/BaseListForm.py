@@ -40,7 +40,6 @@ class BaseListForm(BaseComponent, ABC):
         
     def item(self, index: int):
         for item in self._items:
-            print(f"{item.id} | {item.text} | {item.item}")
             if item.id == index:
                 return item
         return None
