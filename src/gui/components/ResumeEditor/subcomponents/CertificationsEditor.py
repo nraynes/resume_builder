@@ -40,6 +40,17 @@ class CertificationsEditor(BaseComponent):
         self._dat_exp.grid_forget()
         self._dat_issued.grid(row=2, column=0, columnspan=4, sticky="EW")
 
+    def getObject(self) -> Certificate:
+        return Certificate(
+            {
+                "certificate_name": self._inp_certification_name.get(),
+                "issuer": self._inp_issuer.get(),
+                "issue_date": self._dat_issued.getString(),
+                "exp_date": self._dat_exp.getString(),
+                "does_not_expire": bool(self._checked.get()),
+            }
+        )
+
     def onCheck(self, *args):
         if self._checked.get() == 0:
             self.showExpDate()

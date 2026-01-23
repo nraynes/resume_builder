@@ -40,6 +40,17 @@ class EducationEditor(BaseComponent):
         self._dat_grad.default()
         self._dat_grad.grid_forget()
 
+    def getObject(self) -> Education:
+        return Education(
+            {
+                "school_name": self._inp_school_name.get(),
+                "degree_type": self._cmb_degree_type.get(),
+                "major": self._inp_major.get(),
+                "graduation_date": self._dat_grad.getString(),
+                "still_attending": bool(self._checked.get()),
+            }
+        )
+
     def onCheck(self, *args):
         if self._checked.get() == 0:
             self.showGradDate()

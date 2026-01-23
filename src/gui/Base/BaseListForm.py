@@ -81,6 +81,9 @@ class BaseListForm(BaseComponent, ABC):
 
     def lastItem(self) -> BaseListItem:
         return self._items[-1]
+    
+    def items(self):
+        return [item.item for item in self._items]
 
     @property
     def lstItems(self):

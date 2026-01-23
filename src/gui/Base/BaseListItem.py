@@ -23,3 +23,7 @@ class BaseListItem:
     @text.setter
     def text(self, x: str):
         self._text = x
+
+    @item.setter
+    def item(self, x: str):
+        self._item = x

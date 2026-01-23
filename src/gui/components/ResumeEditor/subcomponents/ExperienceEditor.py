@@ -8,6 +8,7 @@ from src.gui.components.ResumeEditor.subcomponents.BulletsForm import BulletsFor
 from src.gui.components.ResumeEditor.subcomponents.BulletEditor import BulletEditor
 from src.gui.base.BaseListItem import BaseListItem
 from typing import Optional
+import uuid
 
 
 class ExperienceEditor(BaseComponent):
@@ -53,6 +54,22 @@ class ExperienceEditor(BaseComponent):
     def hideEndDate(self):
         self._dat_ended_on.default()
         self._dat_ended_on.grid_forget()
+
+    def getObject(self) -> Experience:
+        return Experience(
+            {
+                "job_title": self._inp_job_title.get(),
+                "company": self._inp_company.get(),
+                "company_location": self._inp_company_location.get(),
+                "started_on": self._dat_started_on.getString(),
+                "ended_on": self._dat_ended_on.getString(),
+                "current_position": bool(self._checked.get()),
+                "bullets": [{
+                    "id": str(uuid.uuid4()),
+                    "text": bullet
+                } for bullet in self._frm_bullets.items()],
+            }
+        )
 
     def onCheck(self, *args):
         if self._checked.get() == 0:

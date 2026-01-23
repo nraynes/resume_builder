@@ -1,24 +1,42 @@
 from src.gui.base.BaseEditorListForm import BaseEditorListForm
 from src.gui.windows.CertificationsWindow import CertificationsWindow
 from src.models.Certificate import Certificate
+from src.gui.base.BaseListItem import BaseListItem
 
 
 class CertificationsForm(BaseEditorListForm):
     def __init__(self, *args, **kwargs):
         self._heading = "Certifications"
         self._sub_window = None
+        self._active_list_item = None
         super().__init__(*args, **kwargs)
+
+    def getTextName(self, cert: Certificate):
+        return f"{cert.issuer} - {cert.certificateName}"
 
     def populateData(self, certifications: list[Certificate]):
         self.clear()
         for cert in certifications:
-            self.addItem(cert, f"{cert.issuer} - {cert.certificateName}")
+            self.addItem(cert, self.getTextName(cert))
+
+    def saveActiveListItem(self, new_certificate: Certificate):
+        if self._active_list_item is not None:
+            self._active_list_item.item = new_certificate
+            self._active_list_item.text = self.getTextName(new_certificate)
+            self.replaceItem(self._active_list_item)
+            self._sub_window.hide()
+            self._sub_window = None
+            self._active_list_item = None
+
+    def openModal(self, list_item: BaseListItem):
+        self._active_list_item = list_item
+        self._sub_window = CertificationsWindow(
+            self._frame, certificate=self._active_list_item.item, cmd_save=self.saveActiveListItem
+        )
 
     def cmdAdd(self):
         self.addItem(Certificate())
-        self._sub_window = CertificationsWindow(
-            self._frame, certificate=self.lastItem().item
-        )
+        self.openModal(self.lastItem())
 
     def cmdDelete(self):
         if self.selectedItem() is not None:
@@ -27,6 +45,4 @@ class CertificationsForm(BaseEditorListForm):
     def cmdEdit(self):
         selected_certificate = self.selectedItem()
         if selected_certificate:
-            self._sub_window = CertificationsWindow(
-                self._frame, certificate=selected_certificate.item
-            )
+            self.openModal(selected_certificate)
