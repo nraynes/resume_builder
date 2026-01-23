@@ -11,13 +11,15 @@ class AppController(BaseController):
     def __init__(self):
         self.cv_path = "./data/cv.json"
         self.resumes_path = "./data/resumes"
-        self.cv_raw = self._loadCv()
-        self.cv = Cv(self.cv_raw)
+        self.cv = Cv(self.loadCv())
         self.pdf_service = PDFService()
         self.resumes = {}
         self.populateResumeList()
 
-    def _loadCv(self):
+    def loadCv(self):
+        if not os.path.exists(self.cv_path):
+            with open(self.cv_path, "w") as file:
+                file.write(json.dumps(Cv().to_dict()))
         with open(self.cv_path, "r") as file:
             return json.loads(file.read())
 
@@ -25,6 +27,20 @@ class AppController(BaseController):
         content = json.dumps(self.cv.to_dict())
         with open(self.cv_path, "w") as file:
             file.write(content)
+
+    def overwriteCv(self, cv: Cv):
+        self.cv = cv
+        self.saveCv()
+
+    def resumeFromCv(self, title: str = "", author: str = ""):
+        self.resumes[title] = Resume(title, author, self.cv.to_dict())
+        self.saveResume(title)
+        return self.resumes[title]
+
+    def newResume(self, title: str = "", author: str = ""):
+        self.resumes[title] = Resume(title, author)
+        self.saveResume(title)
+        return self.resumes[title]
 
     def resume(self, title: str):
         if title in self.resumes.keys():
@@ -37,20 +53,6 @@ class AppController(BaseController):
         file_path = f"{self.resumes_path}/{title}.json"
         if os.path.exists(file_path):
             os.remove(file_path)
-
-    def resumeFromCv(self, title: str = "", author: str = ""):
-        self.resumes[title] = Resume(title, author, self.cv_raw)
-        self.saveResume(title)
-        return self.resumes[title]
-
-    def newResume(self, title: str = "", author: str = ""):
-        self.resumes[title] = Resume(title, author)
-        self.saveResume(title)
-        return self.resumes[title]
-
-    def overwriteCv(self, cv: Cv):
-        self.cv = cv
-        self.saveCv()
 
     def overwriteResume(self, title: str, new_resume: Resume):
         self.resumes[title] = new_resume
@@ -68,14 +70,13 @@ class AppController(BaseController):
             self.resumes[title] = Resume(
                 resume_data["title"], resume_data["author"], resume_data
             )
-        return self.resumes[title]
 
     def populateResumeList(self):
         files = self.getFilesInDir(self.resumes_path)
         for file in files:
             self.loadResume(file.split(".")[0])
 
-    def getFilesInDir(cls, dir_path: str):
+    def getFilesInDir(cls, dir_path: str) -> list[str]:
         all_entries = os.listdir(dir_path)
         files = []
         for entry in all_entries:

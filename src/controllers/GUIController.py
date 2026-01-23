@@ -15,16 +15,16 @@ class GUIController(BaseController):
         self.windows = {
             "main": MainWindow(
                 self.root,
-                openEditorCb=self.openEditorWindow,
-                newResumeCb=self.createNewResume,
-                newCvResumeCb=self.createNewResumeFromCv,
-                deleteResumeCb=self.deleteSelectedResume
+                open_editor_cb=self.openEditorWindow,
+                new_resume_cb=self.createNewResume,
+                new_cv_resume_cb=self.createNewResumeFromCv,
+                delete_resume_cb=self.deleteSelectedResume,
             ),
             "editor": EditorWindow(
                 self.root,
-                openMainCb=self.openMainWindow,
-                saveResumeCb=self.saveActiveResume,
-                generatePDFCb=self.outputResumePDF
+                open_main_cb=self.openMainWindow,
+                save_resume_cb=self.saveActiveResume,
+                generate_pdf_cb=self.generateResumePDF,
             ),
         }
         self.openMainWindow()
@@ -37,7 +37,7 @@ class GUIController(BaseController):
     def editorWindow(self) -> EditorWindow:
         return self.windows["editor"]
 
-    def outputResumePDF(self, title: str):
+    def generateResumePDF(self, title: str):
         resume = self.resume(title)
         if resume is not None:
             output_path = filedialog.asksaveasfilename(title="Select where you would like to save this PDF to")

@@ -1,5 +1,8 @@
+from typing import Any
+
+
 class BaseListItem:
-    def __init__(self, item, id: int = 0, text: str = ""):
+    def __init__(self, item: Any, id: int = 0, text: str = ""):
         self._id = id
         self._text = text
         self._item = item

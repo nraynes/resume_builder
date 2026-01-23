@@ -1,4 +1,4 @@
-from src.validation.Validate import Validate
+from src.utils.DateUtils import DateUtils
 from src.enums.Degree import Degree
 from datetime import datetime
 import uuid
@@ -10,7 +10,7 @@ class Education:
         self._school_name = data["school_name"] if "school_name" in data else ""
         self._degree_type = Degree[data["degree_type"]] if "degree_type" in data else Degree.NONE
         self._major = data["major"] if "major" in data else ""
-        self._graduation_date = datetime.strptime(data["graduation_date"] if "graduation_date" in data else Validate.epoch, Validate.isodateformat)
+        self._graduation_date = DateUtils.datetime(data["graduation_date"]) if "graduation_date" in data else DateUtils.epoch()
         self._still_attending = data["still_attending"] if "still_attending" in data else False
 
     @property
@@ -37,42 +37,12 @@ class Education:
     def stillAttending(self):
         return self._still_attending
 
-    def setSchoolName(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._school_name = value
-        return validation
-
-    def setDegreeType(self, value):
-        validation = Validate.degree(value)
-        if validation.passed:
-            self._degree_type = Degree[value]
-        return validation
-
-    def setMajor(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._major = value
-        return validation
-
-    def setGraduationDate(self, value):
-        validation = Validate.date(value)
-        if validation.passed:
-            self._graduation_date = datetime.strptime(value, Validate.isodateformat)
-        return validation
-
-    def setStillAttending(self, value):
-        validation = Validate.bool(value)
-        if validation.passed:
-            self._still_attending = bool(value)
-        return validation
-
     def to_dict(self):
         return {
             "id": self._id,
             "school_name": self._school_name,
             "degree_type": self._degree_type.name,
             "major": self._major,
-            "graduation_date": datetime.strftime(self._graduation_date, Validate.isodateformat),
+            "graduation_date": DateUtils.string(self._graduation_date),
             "still_attending": self._still_attending
         }

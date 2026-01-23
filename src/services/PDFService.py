@@ -29,9 +29,9 @@ class PDFService:
         self.hr()
         self.generateSummary(resume.summary)
         self.generateSkills(resume.skills)
-        self.generateExperience(list(resume.workExperience.values()))
-        self.generateEducation(list(resume.education.values()))
-        self.generateCertifications(list(resume.certificates.values()))
+        self.generateExperience(resume.workExperience)
+        self.generateEducation(resume.education)
+        self.generateCertifications(resume.certificates)
         self.pdf.output(output)
         self.pdf = None
 
@@ -99,10 +99,11 @@ class PDFService:
                 self.pdf.set_font("Helvetica", "B", 10)
                 self.pdf.cell(0, 5, job.jobTitle, ln=1)
                 self.pdf.set_font("Helvetica", "", 10)
+                strJobStarted = datetime.strftime(job.startedOn, self.date_format)
                 if job.currentPosition:
-                    timeframe = f"{datetime.strftime(job.startedOn, self.date_format)} - present"
+                    timeframe = f"{strJobStarted} - present"
                 else:
-                    timeframe = f"{datetime.strftime(job.startedOn, self.date_format)} - {datetime.strftime(job.endedOn, self.date_format)}"
+                    timeframe = f"{strJobStarted} - {datetime.strftime(job.endedOn, self.date_format)}"
                 self.pdf.cell(
                     0,
                     5,
@@ -110,8 +111,8 @@ class PDFService:
                     ln=1,
                 )
                 self.pdf.ln(1)
-                for bullet in job.bullets.values():
-                    self.bullet(bullet["text"])
+                for bullet in job.bullets:
+                    self.bullet(bullet)
                 self.pdf.ln(2)
 
     def generateEducation(self, education: list[Education]):
@@ -120,25 +121,31 @@ class PDFService:
             for edu in education:
                 self.pdf.set_font("Helvetica", "B", 10)
                 formatted_degree = f"{edu.degreeType.name[0].upper()}{edu.degreeType.name[1:].lower()}"
-                
                 self.pdf.cell(0, 5, f"{formatted_degree} - {edu.major}", ln=1)
                 self.pdf.set_font("Helvetica", "", 10)
                 if edu.stillAttending:
-                    grad = "Expected Graduation"
+                    str_grad_phrase = "Expected Graduation"
                 else:
-                    grad = "Graduated"
-                self.pdf.cell(0, 5, f"{edu.schoolName}  |  {grad}: {datetime.strftime(edu.graduationDate, self.date_format)}", ln=1)
+                    str_grad_phrase = "Graduated"
+                self.pdf.cell(
+                    0,
+                    5,
+                    f"{edu.schoolName}  |  {str_grad_phrase}: {datetime.strftime(edu.graduationDate, self.date_format)}",
+                    ln=1,
+                )
 
     def generateCertifications(self, certifications: list[Certificate]):
         if len(certifications) > 0:
             self.section_title("Certifications")
             for cert in certifications:
                 if cert.doesNotExpire:
-                    exp_date = ""
+                    str_expiration = ""
                 else:
-                    exp_date = f" - {datetime.strftime(cert.expDate, self.date_format)}"
+                    str_expiration = (
+                        f" - {datetime.strftime(cert.expDate, self.date_format)}"
+                    )
                 self.pdf.multi_cell(
                     0,
                     5,
-                    f"{cert.issuer} {cert.certificateName}  |  {datetime.strftime(cert.issueDate, self.date_format)}{exp_date}",
+                    f"{cert.issuer} {cert.certificateName}  |  {datetime.strftime(cert.issueDate, self.date_format)}{str_expiration}",
                 )

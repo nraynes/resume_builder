@@ -4,13 +4,14 @@ from src.gui.base.BaseComponent import BaseComponent
 from src.gui.base.BaseListItem import BaseListItem
 from src.gui.lib.Listbox import Listbox
 from abc import ABC, abstractmethod
+from typing import Any
 
 
 class BaseListForm(BaseComponent, ABC):
     _heading: str
     _items: list[BaseListItem]
 
-    def __init__(self, master):
+    def __init__(self, master: tk.Frame):
         self._frame = tk.Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
         self._frame.columnconfigure(0, weight=1)
         self._frame.columnconfigure(1, weight=0)
@@ -34,6 +35,30 @@ class BaseListForm(BaseComponent, ABC):
         self.spacing().grid(row=4, column=3)
         self._btn_add.grid(row=4, column=4, sticky="EW")
 
+    @property
+    def lstItems(self):
+        return self._lst_items
+
+    @property
+    def btnDelete(self):
+        return self._btn_delete
+
+    @property
+    def btnAdd(self):
+        return self._btn_add
+    
+    @property
+    def heading(self):
+        return self._heading
+
+    @abstractmethod
+    def cmdAdd(self):
+        pass
+
+    @abstractmethod
+    def cmdDelete(self):
+        pass
+
     def clear(self):
         self._items = []
         self.updateList()
@@ -43,6 +68,9 @@ class BaseListForm(BaseComponent, ABC):
             if item.id == index:
                 return item
         return None
+    
+    def items(self):
+        return [item.item for item in self._items]
 
     def delete(self, index: int):
         refreshed_items = []
@@ -60,7 +88,7 @@ class BaseListForm(BaseComponent, ABC):
                 return item
         return None
 
-    def addItem(self, item, text: str = ""):
+    def addItem(self, item: Any, text: str = ""):
         self._items.append(BaseListItem(item, text=text))
         self.updateList()
 
@@ -81,26 +109,3 @@ class BaseListForm(BaseComponent, ABC):
 
     def lastItem(self) -> BaseListItem:
         return self._items[-1]
-    
-    def items(self):
-        return [item.item for item in self._items]
-
-    @property
-    def lstItems(self):
-        return self._lst_items
-
-    @property
-    def btnDelete(self):
-        return self._btn_delete
-
-    @property
-    def btnAdd(self):
-        return self._btn_add
-
-    @abstractmethod
-    def cmdAdd(self):
-        pass
-
-    @abstractmethod
-    def cmdDelete(self):
-        pass

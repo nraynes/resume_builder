@@ -2,43 +2,64 @@ import tkinter as tk
 from tkinter import ttk
 import platform
 from src.gui.base.BaseWindow import BaseWindow
-from src.gui.components.ResumeEditor.ResumeEditor import ResumeEditor
+from src.gui.components.ResumeEditor import ResumeEditor
 from src.models.Cv import Cv
+from typing import Callable
 
 
 class EditorWindow(BaseWindow):
 
-    def __init__(self, master: tk.Tk, openMainCb, saveResumeCb, generatePDFCb):
+    def __init__(
+        self,
+        master: tk.Tk,
+        open_main_cb: Callable,
+        save_resume_cb: Callable,
+        generate_pdf_cb: Callable
+    ):
         self._canvas = tk.Canvas(master)
-        self._cmd_save = saveResumeCb
-        self._cmd_pdf = generatePDFCb
+        self.save_resume_cb = save_resume_cb
+        self.generate_pdf_cb = generate_pdf_cb
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
         self._scroll_bar = ttk.Scrollbar(master, orient="vertical", command=self._canvas.yview)
         self._frame = ttk.Frame(self._canvas, padding=10)
-        self._frame.bind("<Configure>", lambda e: self.on_frame_configure())
-        self._canvas.bind("<Configure>", self._on_canvas_configure)
+        self._frame.bind("<Configure>", self.onFrameConfigure)
+        self._canvas.bind("<Configure>", self.onCanvasConfigure)
         self._win_id = self._canvas.create_window((0, 0), window=self._frame, anchor="nw")
         self._canvas.configure(yscrollcommand=self._scroll_bar.set)
-        self._edt_resume = ResumeEditor(self._frame, openMainCb, self.saveResume, self.generatePDF)
+        self._edt_resume = ResumeEditor(self._frame, open_main_cb, self.saveResume, self.generatePDF)
+
         self._edt_resume.pack()
         self._canvas.update_idletasks()
-        self._resize_canvas()
-        self._canvas.bind_all("<MouseWheel>", self.on_mousewheel)
-        self._canvas.bind_all("<Button-4>", self.on_mousewheel)
-        self._canvas.bind_all("<Button-5>", self.on_mousewheel)
+        self.resizeCanvas()
+        self._canvas.bind_all("<MouseWheel>", self.onMousewheel)
+        self._canvas.bind_all("<Button-4>", self.onMousewheel)
+        self._canvas.bind_all("<Button-5>", self.onMousewheel)
+
+    @property
+    def edtResume(self):
+        return self._edt_resume
+
+    def show(self):
+        self._canvas.pack(side="left", fill="both", expand=True)
+        self._scroll_bar.pack(side="right", fill="y")
+        self._canvas.after_idle(self.refreshCanvas)
+
+    def hide(self):
+        self._scroll_bar.pack_forget()
+        self._canvas.pack_forget()
 
     def generatePDF(self):
         self.saveResume()
-        self._cmd_pdf(self._edt_resume.frmMetaData.inpTitle.get())
+        self.generate_pdf_cb(self._edt_resume.frmMetaData.inpTitle.get())
 
     def saveResume(self):
-        self._cmd_save(self._edt_resume.getObject())
+        self.save_resume_cb(self._edt_resume.getObject())
 
     def populateData(self, resume: Cv):
         self._edt_resume.populateData(resume)
 
-    def on_mousewheel(self, event):
+    def onMousewheel(self, event: tk.Event):
         """Handles vertical scrolling across different platforms."""
         os_name = platform.system()
         if os_name == "Windows":
@@ -54,7 +75,7 @@ class EditorWindow(BaseWindow):
             elif event.num == 5:
                 self._canvas.yview_scroll(1, "units")
 
-    def _resize_canvas(self):
+    def resizeCanvas(self):
         x1, y1, x2, y2 = self._canvas.bbox("all")
         max_canvas_width = int(self.screen_width * 0.9)
         self.canvas_width = min(x2 - x1, max_canvas_width)
@@ -62,28 +83,15 @@ class EditorWindow(BaseWindow):
         self.canvas_height = min(y2 - y1, max_canvas_height)
         self._canvas.configure(width=self.canvas_width, height=self.canvas_height)
 
-    def _on_canvas_configure(self, event):
+    def onCanvasConfigure(self, event: tk.Event):
         self._canvas.itemconfigure(self._win_id, width=event.width)
-        self.on_frame_configure()
+        self.onFrameConfigure()
 
-    def on_frame_configure(self):
+    def onFrameConfigure(self, event: tk.Event):
         bbox = self._canvas.bbox("all")
         if bbox is not None:
             self._canvas.configure(scrollregion=bbox)
 
-    @property
-    def frmResume(self):
-        return self._edt_resume
-
-    def hide(self):
-        self._scroll_bar.pack_forget()
-        self._canvas.pack_forget()
-
-    def show(self):
-        self._canvas.pack(side="left", fill="both", expand=True)
-        self._scroll_bar.pack(side="right", fill="y")
-        self._canvas.after_idle(self._refresh_canvas)
-
-    def _refresh_canvas(self):
+    def refreshCanvas(self):
         self._canvas.update_idletasks()
-        self.on_frame_configure()
+        self.onFrameConfigure()

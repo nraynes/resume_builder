@@ -1,6 +1,3 @@
-from src.validation.Validate import Validate
-
-
 class Header:
     def __init__(
         self,
@@ -51,60 +48,6 @@ class Header:
     @property
     def altWebsite(self):
         return self._alt_website
-
-    def setName(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._name = value
-        return validation
-
-    def setProfession(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._profession = value
-        return validation
-
-    def setEmail(self, value):
-        validation = Validate.email(value)
-        if validation.passed:
-            self._email = value
-        return validation
-
-    def setPhoneNumber(self, value):
-        validation = Validate.phoneNumber(value)
-        if validation.passed:
-            self._phone_number = value
-        return validation
-
-    def setCity(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._city = value
-        return validation
-
-    def setState(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._state = value
-        return validation
-
-    def setCountry(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._country = value
-        return validation
-
-    def setWebsite(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._website = value
-        return validation
-
-    def setAltWebsite(self, value):
-        validation = Validate.string(value)
-        if validation.passed:
-            self._alt_website = value
-        return validation
 
     def to_dict(self):
         return {
