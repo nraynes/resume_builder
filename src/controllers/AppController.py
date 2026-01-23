@@ -5,17 +5,29 @@ from src.controllers.BaseController import BaseController
 import json
 import os
 from typing import Optional
+from pathlib import Path
 
 
 class AppController(BaseController):
     resumes: dict[str, Resume]
     def __init__(self):
-        self.cv_path = "./data/cv.json"
-        self.resumes_path = "./data/resumes"
+        self.data_path = "./data"
+        self.cv_path = f"{self.data_path}/cv.json"
+        self.resumes_path = f"{self.data_path}/resumes"
+        self.checkDataPaths()
         self.cv = Cv(self.loadCv())
         self.pdf_service = PDFService()
         self.resumes = {}
         self.populateResumeList()
+
+    def checkDataPaths(self):
+        """Checks if paths exist where data will be accessed.
+        Creates directories if they do not exist.
+        """
+        if not os.path.exists(self.data_path):
+            Path(self.data_path).mkdir()
+        if not os.path.exists(self.resumes_path):
+            Path(self.resumes_path).mkdir()
 
     def loadCv(self) -> dict:
         """Loads the current CV from the stored json file.
