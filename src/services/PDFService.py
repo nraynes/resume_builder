@@ -62,17 +62,23 @@ class PDFService:
         self.pdf.cell(0, 5, header.profession, ln=1)
 
         self.pdf.set_font("Helvetica", "", 10)
-        info_cell = ""
+        info_cell_1 = ""
+        info_cell_2 = ""
         location_part = ""
         for x in [header.city, header.state, header.country]:
             if x:
                 location_part += f"{x}, "
         if location_part:
-            info_cell += f"{location_part[0:-2]}  |  "
-        for x in [header.phoneNumber, header.email, header.website, header.altWebsite]:
+            info_cell_1 += f"{location_part[0:-2]}  |  "
+        for x in [header.phoneNumber, header.email]:
             if x:
-                info_cell += f"{x}  |  "
-        self.pdf.cell(0, 5, info_cell[0:-5], ln=1)
+                info_cell_1 += f"{x}  |  "
+        for x in [header.website, header.altWebsite]:
+            if x:
+                info_cell_2 += f"{x}  |  "
+        self.pdf.cell(0, 5, info_cell_1[0:-5], ln=1)
+        if info_cell_2:
+            self.pdf.cell(0, 5, info_cell_2[0:-5], ln=1)
 
     def generateSummary(self, summary: str):
         if summary:
@@ -142,10 +148,10 @@ class PDFService:
                     str_expiration = ""
                 else:
                     str_expiration = (
-                        f" - {datetime.strftime(cert.expDate, self.date_format)}"
+                        f" | Expires: {datetime.strftime(cert.expDate, self.date_format)}"
                     )
                 self.pdf.multi_cell(
                     0,
                     5,
-                    f"{cert.issuer} {cert.certificateName}  |  {datetime.strftime(cert.issueDate, self.date_format)}{str_expiration}",
+                    f"{cert.issuer} {cert.certificateName}  |  Issued: {datetime.strftime(cert.issueDate, self.date_format)}{str_expiration}",
                 )

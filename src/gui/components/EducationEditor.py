@@ -21,18 +21,17 @@ class EducationEditor(BaseComponent):
         self._dat_grad = LabeledDateInput(self._frame, "Graduation Date:")
         lbl_still_attending = tk.Label(self._frame, text="Still Attending:")
         self._checked = tk.IntVar(value=0)
-        self._checked.trace_add("write", self.onCheck)
         self._chk_still_attending = tk.Checkbutton(self._frame, variable=self._checked, onvalue=1, offvalue=0)
         self._btn_submit = ttk.Button(self._frame, text="Save", command=save_education_cb)
 
         self._inp_school_name.grid(row=0, column=0, columnspan=3, sticky="EW")
         self._inp_major.grid(row=1, column=0, columnspan=3, sticky="EW")
         self._cmb_degree_type.grid(row=2, column=0, columnspan=3, sticky="EW")
-        self.onCheck()
+        self._dat_grad.grid(row=3, column=0, sticky="EW")
         lbl_still_attending.grid(row=3, column=1, sticky="E")
         self._chk_still_attending.grid(row=3, column=2, sticky="EW")
         self._btn_submit.grid(row=4, column=0, columnspan=3, sticky="EW")
-        
+
     @property
     def inpSchoolName(self) -> LabeledInput:
         return self._inp_school_name
@@ -57,14 +56,6 @@ class EducationEditor(BaseComponent):
     def btnSubmit(self) -> ttk.Button:
         return self._btn_submit
 
-    def showGradDate(self):
-        self._dat_grad.undefault()
-        self._dat_grad.grid(row=3, column=0, sticky="EW")
-
-    def hideGradDate(self):
-        self._dat_grad.default()
-        self._dat_grad.grid_forget()
-
     def getObject(self) -> Education:
         return Education(
             {
@@ -75,12 +66,6 @@ class EducationEditor(BaseComponent):
                 "still_attending": bool(self._checked.get()),
             }
         )
-
-    def onCheck(self, *args):
-        if self._checked.get() == 0:
-            self.showGradDate()
-        else:
-            self.hideGradDate()
 
     def populateData(self, education: Education):
         self._inp_school_name.setValue(education.schoolName)
