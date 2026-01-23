@@ -24,7 +24,7 @@ class CertificationsForm(BaseEditorListForm):
         if selected_certificate:
             self.openModal(selected_certificate)
 
-    def getTextName(self, cert: Certificate):
+    def getTextName(self, cert: Certificate) -> str:
         return f"{cert.issuer} - {cert.certificateName}"
 
     def populateData(self, certifications: list[Certificate]):

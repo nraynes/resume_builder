@@ -4,7 +4,7 @@ from src.gui.base.BaseComponent import BaseComponent
 from src.gui.base.BaseListItem import BaseListItem
 from src.gui.lib.Listbox import Listbox
 from abc import ABC, abstractmethod
-from typing import Any
+from typing import Any, Optional
 
 
 class BaseListForm(BaseComponent, ABC):
@@ -36,19 +36,19 @@ class BaseListForm(BaseComponent, ABC):
         self._btn_add.grid(row=4, column=4, sticky="EW")
 
     @property
-    def lstItems(self):
+    def lstItems(self) -> Listbox:
         return self._lst_items
 
     @property
-    def btnDelete(self):
+    def btnDelete(self) -> ttk.Button:
         return self._btn_delete
 
     @property
-    def btnAdd(self):
+    def btnAdd(self) -> ttk.Button:
         return self._btn_add
     
     @property
-    def heading(self):
+    def heading(self) -> str:
         return self._heading
 
     @abstractmethod
@@ -63,13 +63,13 @@ class BaseListForm(BaseComponent, ABC):
         self._items = []
         self.updateList()
 
-    def item(self, index: int) -> BaseListItem:
+    def item(self, index: int) -> Optional[BaseListItem]:
         for item in self._items:
             if item.id == index:
                 return item
         return None
     
-    def items(self):
+    def items(self) -> list[Any]:
         return [item.item for item in self._items]
 
     def delete(self, index: int):
@@ -80,7 +80,7 @@ class BaseListForm(BaseComponent, ABC):
         self._items = refreshed_items
         self.updateList()
 
-    def selectedItem(self) -> BaseListItem:
+    def selectedItem(self) -> Optional[BaseListItem]:
         selected_index = self._lst_items.selected_index()
         if selected_index is not None:
             item = self.item(selected_index)

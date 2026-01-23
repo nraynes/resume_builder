@@ -22,7 +22,7 @@ class ExperienceModal(BaseModal):
         self.populateData(experience)
 
     @property
-    def edtExperience(self):
+    def edtExperience(self) -> ExperienceEditor:
         return self._edt_experience
 
     def populateData(self, experience: Experience):

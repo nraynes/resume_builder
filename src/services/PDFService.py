@@ -1,5 +1,5 @@
 from fpdf import FPDF
-from src.models.Resume import Resume
+from src.models.Cv import Cv
 from src.models.Header import Header
 from src.models.Experience import Experience
 from src.models.Education import Education
@@ -18,11 +18,11 @@ class PDFService:
         self.pdf = None
         self.date_format = "%b %Y"
 
-    def generatePDFFromResume(self, resume: Resume, output: str):
+    def generatePDFFromResume(self, title: str, author: str, resume: Cv, output: str):
         self.pdf = ResumePDF(orientation="P", unit="mm", format="Letter")
         self.pdf.set_auto_page_break(auto=True, margin=15)
-        self.pdf.set_title(resume.title)
-        self.pdf.set_author(resume.author)
+        self.pdf.set_title(title)
+        self.pdf.set_author(author)
         self.pdf.add_page()
         self.pdf.set_font("Helvetica", "", 10)
         self.generateHeader(resume.header)

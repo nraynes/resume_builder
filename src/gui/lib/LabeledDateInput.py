@@ -6,7 +6,7 @@ from src.utils.DateUtils import DateUtils
 
 
 class LabeledDateInput(BaseEntry):
-    def __init__(self, master, lbl_text: str = "", *args, **kwargs):
+    def __init__(self, master: tk.BaseWidget, lbl_text: str = "", *args, **kwargs):
         self._frame = tk.Frame(master)
         self._frame.columnconfigure(1, weight=1)
         self._stored_date = None
@@ -15,10 +15,10 @@ class LabeledDateInput(BaseEntry):
         lbl.grid(row=0, sticky="E")
         self._inp.grid(row=0, column=1, sticky="EW")
 
-    def get(self):
+    def get(self) -> datetime:
         return datetime.combine(self._inp.get_date(), datetime.min.time())
 
-    def getString(self):
+    def getString(self) -> str:
         return DateUtils.string(self.get())
 
     def clear(self):

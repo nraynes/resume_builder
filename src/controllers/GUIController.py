@@ -37,13 +37,19 @@ class GUIController(BaseController):
     def editorWindow(self) -> EditorWindow:
         return self.windows["editor"]
 
-    def generateResumePDF(self, title: str):
-        resume = self.resume(title)
-        if resume is not None:
-            output_path = filedialog.asksaveasfilename(title="Select where you would like to save this PDF to")
-            if output_path[-4:] != ".pdf":
-                output_path = f"{output_path.split(".")[0]}.pdf"
-            self.pdf_service.generatePDFFromResume(resume, output_path)
+    def generateResumePDF(self, title: Optional[str]):
+        if title is None:
+            self.generatePDF("Curriculum Vitae", "N/a", self.cv)
+        else:
+            resume = self.resume(title)
+            if resume is not None:
+                self.generatePDF(resume.title, resume.author, resume)
+
+    def generatePDF(self, title: str, author: str, resume: Cv):
+        output_path = filedialog.asksaveasfilename(title="Select where you would like to save this PDF to")
+        if output_path[-4:] != ".pdf":
+            output_path = f"{output_path.split(".")[0]}.pdf"
+        self.pdf_service.generatePDFFromResume(title, author, resume, output_path)
 
     def deleteSelectedResume(self, title: str):
         self.deleteResume(title)

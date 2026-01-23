@@ -13,10 +13,10 @@ class SummaryForm(BaseComponent):
         self._txt_summary.grid(row=2)
 
     @property
-    def txtSummary(self):
+    def txtSummary(self) -> tk.Text:
         return self._txt_summary
 
-    def get(self):
+    def get(self) -> str:
         return self._txt_summary.get("1.0", "end-1c")
 
     def populateData(self, summary: str):

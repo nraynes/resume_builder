@@ -16,7 +16,7 @@ class BaseListItem:
         return self._text
 
     @property
-    def item(self) -> str:
+    def item(self) -> Any:
         return self._item
 
     @id.setter
@@ -28,5 +28,5 @@ class BaseListItem:
         self._text = x
 
     @item.setter
-    def item(self, x: str):
+    def item(self, x: Any):
         self._item = x

@@ -4,7 +4,7 @@ from tkinter import ttk
 
 
 class LabeledCombo(BaseEntry):
-    def __init__(self, master, lbl_text: str = "", *args, **kwargs):
+    def __init__(self, master: tk.BaseWidget, lbl_text: str = "", *args, **kwargs):
         self._frame = tk.Frame(master)
         self._frame.columnconfigure(1, weight=1)
         lbl = tk.Label(self._frame, text=lbl_text)
@@ -13,7 +13,7 @@ class LabeledCombo(BaseEntry):
         lbl.grid(row=0, sticky="E")
         self._inp.grid(row=0, column=1, sticky="EW")
 
-    def get(self):
+    def get(self) -> str:
         return self._inp.get()
 
     def clear(self):

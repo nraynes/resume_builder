@@ -10,11 +10,11 @@ class BaseMetaDataForm(BaseComponent):
         self._inp_author = LabeledInput(self._frame, "Author:")
 
     @property
-    def inpTitle(self):
+    def inpTitle(self) -> LabeledInput:
         return self._inp_title
 
     @property
-    def inpAuthor(self):
+    def inpAuthor(self) -> LabeledInput:
         return self._inp_author
 
     def packBase(self):

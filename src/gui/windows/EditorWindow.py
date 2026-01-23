@@ -4,7 +4,7 @@ import platform
 from src.gui.base.BaseWindow import BaseWindow
 from src.gui.components.ResumeEditor import ResumeEditor
 from src.models.Cv import Cv
-from typing import Callable
+from typing import Callable, Optional
 
 
 class EditorWindow(BaseWindow):
@@ -27,7 +27,12 @@ class EditorWindow(BaseWindow):
         self._canvas.bind("<Configure>", self.onCanvasConfigure)
         self._win_id = self._canvas.create_window((0, 0), window=self._frame, anchor="nw")
         self._canvas.configure(yscrollcommand=self._scroll_bar.set)
-        self._edt_resume = ResumeEditor(self._frame, open_main_cb, self.saveResume, self.generatePDF)
+        self._edt_resume = ResumeEditor(
+            self._frame,
+            open_main_cb=open_main_cb,
+            save_resume_cb=self.saveResume,
+            generate_pdf_cb=self.generatePDF
+        )
 
         self._edt_resume.pack()
         self._canvas.update_idletasks()
@@ -37,7 +42,7 @@ class EditorWindow(BaseWindow):
         self._canvas.bind_all("<Button-5>", self.onMousewheel)
 
     @property
-    def edtResume(self):
+    def edtResume(self) -> ResumeEditor:
         return self._edt_resume
 
     def show(self):
@@ -51,7 +56,7 @@ class EditorWindow(BaseWindow):
 
     def generatePDF(self):
         self.saveResume()
-        self.generate_pdf_cb(self._edt_resume.frmMetaData.inpTitle.get())
+        self.generate_pdf_cb(None if self._edt_resume.isCv else self._edt_resume.frmMetaData.inpTitle.get())
 
     def saveResume(self):
         self.save_resume_cb(self._edt_resume.getObject())
@@ -87,7 +92,7 @@ class EditorWindow(BaseWindow):
         self._canvas.itemconfigure(self._win_id, width=event.width)
         self.onFrameConfigure()
 
-    def onFrameConfigure(self, event: tk.Event):
+    def onFrameConfigure(self, event: Optional[tk.Event] = None):
         bbox = self._canvas.bbox("all")
         if bbox is not None:
             self._canvas.configure(scrollregion=bbox)

@@ -6,7 +6,7 @@ class BaseFrame:
     _frame: tk.Frame
 
     @property
-    def frame(self):
+    def frame(self) -> tk.Frame:
         return self._frame
 
     def spacing(self, master: Optional[tk.BaseWidget] = None, height: int = 5, width: int = 5):

@@ -5,7 +5,7 @@ from src.models.Certificate import Certificate
 
 
 class Cv:
-    def __init__(self, data = {}):
+    def __init__(self, data: dict = {}):
         self._header = Header(data["header"] if "header" in data.keys() else {})
         self._summary = data["summary"] if "summary" in data.keys() else ""
         self._education = []
@@ -23,30 +23,30 @@ class Cv:
                 self._work_experience.append(Experience(work))
 
     @property
-    def header(self):
+    def header(self) -> Header:
         return self._header
 
     @property
-    def summary(self):
+    def summary(self) -> str:
         return self._summary
 
     @property
-    def education(self):
+    def education(self) -> list[Education]:
         return self._education
 
     @property
-    def skills(self):
+    def skills(self) -> list[str]:
         return self._skills
 
     @property
-    def certificates(self):
+    def certificates(self) -> list[Certificate]:
         return self._certificates
 
     @property
-    def workExperience(self):
+    def workExperience(self) -> list[Experience]:
         return self._work_experience
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "header": self._header.to_dict(),
             "summary": self._summary,

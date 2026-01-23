@@ -24,7 +24,7 @@ class EducationForm(BaseEditorListForm):
         if selected_education:
             self.openModal(selected_education)
 
-    def getTextName(self, edu: Education):
+    def getTextName(self, edu: Education) -> str:
         return f"{edu.degreeType.name} - {edu.major}"
 
     def populateData(self, education: list[Education]):

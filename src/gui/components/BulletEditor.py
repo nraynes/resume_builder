@@ -22,11 +22,11 @@ class BulletEditor(BaseComponent):
         self._btn_submit.pack(anchor="e")
 
     @property
-    def txtBullet(self):
+    def txtBullet(self) -> tk.Text:
         return self._txt_bullet
 
     @property
-    def btnSubmit(self):
+    def btnSubmit(self) -> ttk.Button:
         return self._btn_submit
 
     def populateData(self, bullet: BaseListItem):

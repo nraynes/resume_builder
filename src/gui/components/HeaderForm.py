@@ -34,39 +34,39 @@ class HeaderForm(BaseComponent):
         self._inp_alt_website.grid(row=3, column=2, sticky="EW")
 
     @property
-    def inpName(self):
+    def inpName(self) -> LabeledInput:
         return self._inp_name
 
     @property
-    def inpProfession(self):
+    def inpProfession(self) -> LabeledInput:
         return self._inp_profession
 
     @property
-    def inpEmail(self):
+    def inpEmail(self) -> LabeledInput:
         return self._inp_email
 
     @property
-    def inpPhoneNumber(self):
+    def inpPhoneNumber(self) -> LabeledInput:
         return self._inp_phone_number
 
     @property
-    def inpCity(self):
+    def inpCity(self) -> LabeledInput:
         return self._inp_city
 
     @property
-    def inpState(self):
+    def inpState(self) -> LabeledInput:
         return self._inp_state
 
     @property
-    def inpCountry(self):
+    def inpCountry(self) -> LabeledInput:
         return self._inp_country
 
     @property
-    def inpWebsite(self):
+    def inpWebsite(self) -> LabeledInput:
         return self._inp_website
 
     @property
-    def inpAltWebsite(self):
+    def inpAltWebsite(self) -> LabeledInput:
         return self._inp_alt_website
 
     def populateData(self, header: Header):

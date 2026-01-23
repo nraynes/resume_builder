@@ -9,11 +9,11 @@ class PickResumeList(BaseComponent):
     def __init__(
         self,
         master: tk.Frame,
-        open_resume_cb: Callable,
+        open_editor_cb: Callable,
         delete_resume_cb: Callable
     ):
         self._frame = tk.Frame(master, padx=5, pady=5)
-        self.open_resume_cb = open_resume_cb
+        self.open_editor_cb = open_editor_cb
         self.delete_resume_cb = delete_resume_cb
         self._lst_resumes = Listbox(self._frame)
         self._btn_open_resume = ttk.Button(self._frame, text="View/Edit Resume", command=self.openResume)
@@ -24,15 +24,15 @@ class PickResumeList(BaseComponent):
         self._btn_delete_resume.grid(row=1, column=1, sticky="EW")
 
     @property
-    def lstResumes(self):
+    def lstResumes(self) -> Listbox:
         return self._lst_resumes
 
     @property
-    def btnOpenResume(self):
+    def btnOpenResume(self) -> ttk.Button:
         return self._btn_open_resume
 
     @property
-    def btnDeleteResume(self):
+    def btnDeleteResume(self) -> ttk.Button:
         return self._btn_delete_resume
 
     def deleteResume(self):
@@ -48,4 +48,4 @@ class PickResumeList(BaseComponent):
     def openResume(self):
         title = self._lst_resumes.selected()
         if title is not None:
-            self.open_resume_cb(title)
+            self.open_editor_cb(title)

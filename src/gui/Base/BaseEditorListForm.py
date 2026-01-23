@@ -10,7 +10,7 @@ class BaseEditorListForm(BaseListForm):
         self._btn_edit.grid(row=4, column=2, sticky="EW")
 
     @property
-    def btnEdit(self):
+    def btnEdit(self) -> ttk.Button:
         return self._btn_edit
     
     @abstractmethod

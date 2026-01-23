@@ -32,27 +32,27 @@ class CertificationsEditor(BaseComponent):
         self._chk_does_not_expire.grid(row=3, column=3, sticky="EW")
 
     @property
-    def inpCertificationName(self):
+    def inpCertificationName(self) -> LabeledInput:
         return self._inp_certification_name
 
     @property
-    def inpIssuer(self):
+    def inpIssuer(self) -> LabeledInput:
         return self._inp_issuer
 
     @property
-    def datIssued(self):
+    def datIssued(self) -> LabeledDateInput:
         return self._dat_issued
 
     @property
-    def datExp(self):
+    def datExp(self) -> LabeledDateInput:
         return self._dat_exp
 
     @property
-    def chkDoesNotExpire(self):
+    def chkDoesNotExpire(self) -> tk.Checkbutton:
         return self._chk_does_not_expire
 
     @property
-    def btnSubmit(self):
+    def btnSubmit(self) -> ttk.Button:
         return self._btn_submit
 
     def showExpDate(self):

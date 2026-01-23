@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from src.gui.base.BaseMetaDataForm import BaseMetaDataForm
-from typing import Callable
+from typing import Callable, Optional
 
 
 class NewResumeForm(BaseMetaDataForm):
@@ -25,11 +25,11 @@ class NewResumeForm(BaseMetaDataForm):
         self._btn_new_cv_resume.pack(fill=tk.BOTH)
 
     @property
-    def btnNewResume(self):
+    def btnNewResume(self) -> ttk.Button:
         return self._btn_new_resume
 
     @property
-    def btnNewCvResume(self):
+    def btnNewCvResume(self) -> ttk.Button:
         return self._btn_new_cv_resume
 
     def newResume(self):
@@ -42,7 +42,7 @@ class NewResumeForm(BaseMetaDataForm):
         if fields is not None:
             self.new_cv_resume_cb(*fields)
 
-    def extractFields(self):
+    def extractFields(self) -> Optional[tuple[str]]:
         title = self._inp_title.get()
         author = self._inp_author.get()
         if title and author:

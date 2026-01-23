@@ -1,12 +1,10 @@
 from src.utils.DateUtils import DateUtils
 from src.enums.Degree import Degree
 from datetime import datetime
-import uuid
 
 
 class Education:
-    def __init__(self, data = {}):
-        self._id = data["id"] if "id" in data else str(uuid.uuid4())
+    def __init__(self, data: dict = {}):
         self._school_name = data["school_name"] if "school_name" in data else ""
         self._degree_type = Degree[data["degree_type"]] if "degree_type" in data else Degree.NONE
         self._major = data["major"] if "major" in data else ""
@@ -14,32 +12,27 @@ class Education:
         self._still_attending = data["still_attending"] if "still_attending" in data else False
 
     @property
-    def id(self):
-        return self._id
-
-    @property
-    def schoolName(self):
+    def schoolName(self) -> str:
         return self._school_name
 
     @property
-    def degreeType(self):
+    def degreeType(self) -> Degree:
         return self._degree_type
 
     @property
-    def major(self):
+    def major(self) -> str:
         return self._major
 
     @property
-    def graduationDate(self):
+    def graduationDate(self) -> datetime:
         return self._graduation_date
 
     @property
-    def stillAttending(self):
+    def stillAttending(self) -> bool:
         return self._still_attending
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
-            "id": self._id,
             "school_name": self._school_name,
             "degree_type": self._degree_type.name,
             "major": self._major,

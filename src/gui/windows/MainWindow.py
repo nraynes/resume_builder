@@ -38,15 +38,15 @@ class MainWindow(BaseWindow):
         self._lst_pick_resume.pack()
 
     @property
-    def btnOpenCv(self):
+    def btnOpenCv(self) -> ttk.Button:
         return self._btn_open_cv
 
     @property
-    def frmNewResume(self):
+    def frmNewResume(self) -> NewResumeForm:
         return self._frm_new_resume
 
     @property
-    def lstPickResume(self):
+    def lstPickResume(self) -> PickResumeList:
         return self._lst_pick_resume
 
     def show(self):

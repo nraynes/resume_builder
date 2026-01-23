@@ -1,7 +1,7 @@
 class Header:
     def __init__(
         self,
-        data = {}
+        data: dict = {}
     ):
         self._name = data["name"] if "name" in data.keys() else ""
         self._profession = data["profession"] if "profession" in data.keys() else ""
@@ -14,42 +14,42 @@ class Header:
         self._alt_website = data["alt_website"] if "alt_website" in data.keys() else ""
 
     @property
-    def name(self):
+    def name(self) -> str:
         return self._name
 
     @property
-    def profession(self):
+    def profession(self) -> str:
         return self._profession
 
     @property
-    def email(self):
+    def email(self) -> str:
         return self._email
 
     @property
-    def phoneNumber(self):
+    def phoneNumber(self) -> str:
         return self._phone_number
 
     @property
-    def city(self):
+    def city(self) -> str:
         return self._city
 
     @property
-    def state(self):
+    def state(self) -> str:
         return self._state
 
     @property
-    def country(self):
+    def country(self) -> str:
         return self._country
 
     @property
-    def website(self):
+    def website(self) -> str:
         return self._website
 
     @property
-    def altWebsite(self):
+    def altWebsite(self) -> str:
         return self._alt_website
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
             "name": self._name,
             "profession": self._profession,

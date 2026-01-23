@@ -22,7 +22,7 @@ class EducationModal(BaseModal):
         self.populateData(education)
 
     @property
-    def edtEducation(self):
+    def edtEducation(self) -> EducationEditor:
         return self._edt_education
 
     def populateData(self, education: Education):

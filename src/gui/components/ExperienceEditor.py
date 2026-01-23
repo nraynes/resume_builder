@@ -46,39 +46,39 @@ class ExperienceEditor(BaseComponent):
         self._btn_submit.grid(row=9, column=0, sticky="EW")
         
     @property
-    def inpJobTitle(self):
+    def inpJobTitle(self) -> LabeledInput:
         return self._inp_job_title
 
     @property
-    def inpCompany(self):
+    def inpCompany(self) -> LabeledInput:
         return self._inp_company
 
     @property
-    def inpCompanyLocation(self):
+    def inpCompanyLocation(self) -> LabeledInput:
         return self._inp_company_location
 
     @property
-    def datStartedOn(self):
+    def datStartedOn(self) -> LabeledDateInput:
         return self._dat_started_on
 
     @property
-    def datEndedOn(self):
+    def datEndedOn(self) -> LabeledDateInput:
         return self._dat_ended_on
 
     @property
-    def chkCurrentPosition(self):
+    def chkCurrentPosition(self) -> tk.Checkbutton:
         return self._chk_current_position
 
     @property
-    def frmBullets(self):
+    def frmBullets(self) -> BulletsForm:
         return self._frm_bullets
 
     @property
-    def edtBullet(self):
+    def edtBullet(self) -> BulletEditor:
         return self._edt_bullet
 
     @property
-    def btnSubmit(self):
+    def btnSubmit(self) -> ttk.Button:
         return self._btn_submit
 
     def showEndDate(self):

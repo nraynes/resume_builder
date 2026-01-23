@@ -24,7 +24,7 @@ class ExperienceForm(BaseEditorListForm):
         if selected_experience:
             self.openModal(selected_experience)
 
-    def getTextName(self, work: Experience):
+    def getTextName(self, work: Experience) -> str:
         return f"{work.company} - {work.jobTitle}"
 
     def populateData(self, experience_list: list[Experience]):

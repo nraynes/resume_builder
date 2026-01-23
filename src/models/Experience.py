@@ -1,11 +1,9 @@
 from src.utils.DateUtils import DateUtils
 from datetime import datetime
-import uuid
 
 
 class Experience:
-    def __init__(self, data = {}):
-        self._id = data["id"] if "id" in data else str(uuid.uuid4())
+    def __init__(self, data: dict = {}):
         self._job_title = data["job_title"] if "job_title" in data else ""
         self._company = data["company"] if "company" in data else ""
         self._company_location = data["company_location"] if "company_location" in data else ""
@@ -18,40 +16,35 @@ class Experience:
                 self._bullets.append(bullet)
 
     @property
-    def id(self):
-        return self._id
-
-    @property
-    def jobTitle(self):
+    def jobTitle(self) -> str:
         return self._job_title
 
     @property
-    def company(self):
+    def company(self) -> str:
         return self._company
 
     @property
-    def companyLocation(self):
+    def companyLocation(self) -> str:
         return self._company_location
 
     @property
-    def startedOn(self):
+    def startedOn(self) -> datetime:
         return self._started_on
 
     @property
-    def endedOn(self):
+    def endedOn(self) -> datetime:
         return self._ended_on
 
     @property
-    def currentPosition(self):
+    def currentPosition(self) -> bool:
         return self._current_position
 
     @property
-    def bullets(self):
+    def bullets(self) -> list[str]:
         return self._bullets
 
-    def to_dict(self):
+    def to_dict(self) -> dict:
         return {
-            "id": self._id,
             "job_title": self._job_title,
             "company": self._company,
             "company_location": self._company_location,

@@ -21,7 +21,7 @@ class CertificationsModal(BaseModal):
         self.populateData(certificate)
         
     @property
-    def edtCertifications(self):
+    def edtCertifications(self) -> CertificationsEditor:
         return self._edt_certifications
 
     def populateData(self, certification: Certificate):

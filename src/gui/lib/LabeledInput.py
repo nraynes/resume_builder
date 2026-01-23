@@ -3,7 +3,7 @@ import tkinter as tk
 
 
 class LabeledInput(BaseEntry):
-    def __init__(self, master, lbl_text: str = ""):
+    def __init__(self, master: tk.BaseWidget, lbl_text: str = ""):
         self._frame = tk.Frame(master)
         self._frame.columnconfigure(1, weight=1)
         lbl = tk.Label(self._frame, text=lbl_text)
@@ -12,7 +12,7 @@ class LabeledInput(BaseEntry):
         lbl.grid(row=0, sticky="E")
         self._inp.grid(row=0, column=1, sticky="EW")
 
-    def get(self):
+    def get(self) -> str:
         return self._inp.get()
 
     def clear(self):

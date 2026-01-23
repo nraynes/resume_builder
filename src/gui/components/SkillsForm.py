@@ -16,10 +16,12 @@ class SkillsForm(BaseListForm):
         return self._inp_skill
 
     def cmdAdd(self):
-        pass
+        skill = self._inp_skill.get()
+        self.addItem(skill, skill)
 
     def cmdDelete(self):
-        pass
+        if self.selectedItem() is not None:
+            self.delete(self.selectedItem().id)
 
     def populateData(self, skills: list[str]):
         self.clear()

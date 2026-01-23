@@ -1,6 +1,7 @@
 from src.models.Cv import Cv
 from src.models.Resume import Resume
 from src.services.PDFService import PDFService
+from typing import Optional
 
 
 class BaseController:
@@ -9,13 +10,13 @@ class BaseController:
     resumes: dict[str, Resume]
     pdf_service: PDFService
 
-    def resume(self):
+    def resume(self) -> Optional[Resume]:
         pass
 
-    def newResume(self):
+    def newResume(self) -> Resume:
         pass
 
-    def resumeFromCv(self):
+    def resumeFromCv(self) -> Resume:
         pass
 
     def overwriteCv(self, cv: Cv):

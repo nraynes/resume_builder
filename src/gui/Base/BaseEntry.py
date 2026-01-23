@@ -8,7 +8,7 @@ class BaseEntry(BaseComponent, ABC):
     _inp: tk.BaseWidget
 
     @property
-    def inp(self):
+    def inp(self) -> tk.BaseWidget:
         return self._inp
 
     @abstractmethod

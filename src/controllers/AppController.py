@@ -4,6 +4,7 @@ from src.services.PDFService import PDFService
 from src.controllers.BaseController import BaseController
 import json
 import os
+from typing import Optional
 
 
 class AppController(BaseController):
@@ -16,7 +17,7 @@ class AppController(BaseController):
         self.resumes = {}
         self.populateResumeList()
 
-    def loadCv(self):
+    def loadCv(self) -> dict:
         if not os.path.exists(self.cv_path):
             with open(self.cv_path, "w") as file:
                 file.write(json.dumps(Cv().to_dict()))
@@ -32,17 +33,17 @@ class AppController(BaseController):
         self.cv = cv
         self.saveCv()
 
-    def resumeFromCv(self, title: str = "", author: str = ""):
+    def resumeFromCv(self, title: str = "", author: str = "") -> Resume:
         self.resumes[title] = Resume(title, author, self.cv.to_dict())
         self.saveResume(title)
         return self.resumes[title]
 
-    def newResume(self, title: str = "", author: str = ""):
+    def newResume(self, title: str = "", author: str = "") -> Resume:
         self.resumes[title] = Resume(title, author)
         self.saveResume(title)
         return self.resumes[title]
 
-    def resume(self, title: str):
+    def resume(self, title: str) -> Optional[Resume]:
         if title in self.resumes.keys():
             return self.resumes[title]
         return None

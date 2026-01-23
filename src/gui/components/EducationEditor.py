@@ -34,27 +34,27 @@ class EducationEditor(BaseComponent):
         self._btn_submit.grid(row=4, column=0, columnspan=3, sticky="EW")
         
     @property
-    def inpSchoolName(self):
+    def inpSchoolName(self) -> LabeledInput:
         return self._inp_school_name
 
     @property
-    def cmbDegreeType(self):
+    def cmbDegreeType(self) -> LabeledCombo:
         return self._cmb_degree_type
 
     @property
-    def inpMajor(self):
+    def inpMajor(self) -> LabeledInput:
         return self._inp_major
 
     @property
-    def datGrad(self):
+    def datGrad(self) -> LabeledDateInput:
         return self._dat_grad
 
     @property
-    def chkStillAttending(self):
+    def chkStillAttending(self) -> tk.Checkbutton:
         return self._chk_still_attending
 
     @property
-    def btnSubmit(self):
+    def btnSubmit(self) -> ttk.Button:
         return self._btn_submit
 
     def showGradDate(self):

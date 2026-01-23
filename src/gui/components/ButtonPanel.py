@@ -28,15 +28,15 @@ class ButtonPanel(BaseComponent):
         self._btn_generate.grid(row=0, column=2)
 
     @property
-    def btnBack(self):
+    def btnBack(self) -> ttk.Button:
         return self._btn_back
 
     @property
-    def btnSave(self):
+    def btnSave(self) -> ttk.Button:
         return self._btn_save
 
     @property
-    def btnGenerate(self):
+    def btnGenerate(self) -> ttk.Button:
         return self._btn_generate
 
     def saveResume(self):
