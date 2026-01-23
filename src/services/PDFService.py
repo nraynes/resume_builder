@@ -7,6 +7,11 @@ from src.models.Certificate import Certificate
 from datetime import datetime
 
 class ResumePDF(FPDF):
+    """Base class to ensure headers and footers are no included in the pdf.
+
+    Args:
+        FPDF (_type_): Original FDPF class.
+    """
     def header(self):
         pass
 
@@ -19,6 +24,14 @@ class PDFService:
         self.date_format = "%b %Y"
 
     def generatePDFFromResume(self, title: str, author: str, resume: Cv, output: str):
+        """Generates a PDF document from a resume object and saves it to a file at the output location.
+
+        Args:
+            title (str): The title of the resume.
+            author (str): The author of the resume.
+            resume (Cv): The resume object.
+            output (str): The file path to save the generated PDF to.
+        """
         self.pdf = ResumePDF(orientation="P", unit="mm", format="Letter")
         self.pdf.set_auto_page_break(auto=True, margin=15)
         self.pdf.set_title(title)
@@ -36,6 +49,12 @@ class PDFService:
         self.pdf = None
 
     def hr(self, gap_before=2, gap_after=4):
+        """Adds a horizontal rule on the current pdf being generated.
+
+        Args:
+            gap_before (int, optional): Gap before rule. Defaults to 2.
+            gap_after (int, optional): Gap after rule. Defaults to 4.
+        """
         self.pdf.ln(gap_before)
         x1 = self.pdf.l_margin
         x2 = self.pdf.w - self.pdf.r_margin
@@ -45,16 +64,32 @@ class PDFService:
         self.pdf.ln(gap_after)
 
     def section_title(self, title: str):
+        """Adds a section title to the current pdf being generated.
+
+        Args:
+            title (str): The title of the section.
+        """
         self.pdf.set_font("Helvetica", "B", 11)
         self.pdf.ln(2)
         self.pdf.cell(0, 6, title.upper(), ln=1)
         self.pdf.set_font("Helvetica", "", 10)
 
     def bullet(self, text: str, indent=4):
+        """Adds a bullet point to the current pdf being generated.
+
+        Args:
+            text (str): The text to include next to the bullet point.
+            indent (int, optional): The indent for this bullet point. Defaults to 4.
+        """
         self.pdf.set_x(self.pdf.l_margin + indent)
         self.pdf.multi_cell(0, 5, f"- {text}")
 
     def generateHeader(self, header: Header):
+        """Generates and formats the header section.
+
+        Args:
+            header (Header): Resume header object.
+        """
         self.pdf.set_font("Helvetica", "B", 16)
         self.pdf.cell(0, 8, header.name, ln=1)
 
@@ -81,6 +116,11 @@ class PDFService:
             self.pdf.cell(0, 5, info_cell_2[0:-5], ln=1)
 
     def generateSummary(self, summary: str):
+        """Generates and formats the resume summary.
+
+        Args:
+            summary (str): The summary from the resume.
+        """
         if summary:
             self.section_title("Summary")
             self.pdf.multi_cell(
@@ -90,6 +130,11 @@ class PDFService:
             )
 
     def generateSkills(self, skills: list[str]):
+        """Generates and formats the skills section.
+
+        Args:
+            skills (list[str]): List of skills.
+        """
         if len(skills) > 0:
             self.section_title("Skills")
             skill_str = ""
@@ -98,6 +143,11 @@ class PDFService:
             self.pdf.multi_cell(0, 5, skill_str[0:-2])
 
     def generateExperience(self, experience: list[Experience]):
+        """Generates and formats the work experience section
+
+        Args:
+            experience (list[Experience]): List of work experience objects.
+        """
         if len(experience) > 0:
             self.section_title("Experience")
 
@@ -122,6 +172,11 @@ class PDFService:
                 self.pdf.ln(2)
 
     def generateEducation(self, education: list[Education]):
+        """Generates and formats the education section.
+
+        Args:
+            education (list[Education]): List of education objects.
+        """
         if len(education) > 0:
             self.section_title("Education")
             for edu in education:
@@ -141,6 +196,11 @@ class PDFService:
                 )
 
     def generateCertifications(self, certifications: list[Certificate]):
+        """Generates and formats the certifications section.
+
+        Args:
+            certifications (list[Certificate]): List of certification objects.
+        """
         if len(certifications) > 0:
             self.section_title("Certifications")
             for cert in certifications:

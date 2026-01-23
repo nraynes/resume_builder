@@ -38,6 +38,13 @@ class GUIController(BaseController):
         return self.windows["editor"]
 
     def generateResumePDF(self, title: Optional[str]):
+        """Calls the GeneratePDF method with different arguments based on whether
+        the CV or a Resume is being generated. If a title is supplied, then a resume
+        is generated. If no title is supplied, the CV is generated.
+
+        Args:
+            title (Optional[str]): The title of a resume.
+        """
         if title is None:
             self.generatePDF("Curriculum Vitae", "N/a", self.cv)
         else:
@@ -46,6 +53,13 @@ class GUIController(BaseController):
                 self.generatePDF(resume.title, resume.author, resume)
 
     def generatePDF(self, title: str, author: str, resume: Cv):
+        """Asks the user where to save the pdf file, then generates and saves it.
+
+        Args:
+            title (str): The title of the resume.
+            author (str): The author of the resume.
+            resume (Cv): The Resume or Cv object to generate a pdf from.
+        """
         output_path = filedialog.asksaveasfilename(title="Select where you would like to save this PDF to")
         if output_path[-4:] != ".pdf":
             output_path = f"{output_path.split(".")[0]}.pdf"
@@ -62,6 +76,12 @@ class GUIController(BaseController):
         else:
             self.overwriteCv(resume)
 
+    def setActiveResume(self, title: Optional[str] = None):
+        if title is None:
+            self._active_resume = self.cv
+        else:
+            self._active_resume = self.resume(title)
+
     def createNewResume(self, title: str, author: str):
         self.newResume(title, author)
         self.populateMainWindowData()
@@ -76,12 +96,6 @@ class GUIController(BaseController):
     def populateEditorWindowData(self):
         if self._active_resume is not None:
             self.editorWindow.populateData(self._active_resume)
-
-    def setActiveResume(self, title: Optional[str] = None):
-        if title is None:
-            self._active_resume = self.cv
-        else:
-            self._active_resume = self.resume(title)
 
     def openMainWindow(self):
         self.editorWindow.hide()

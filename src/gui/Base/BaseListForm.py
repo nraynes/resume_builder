@@ -46,7 +46,7 @@ class BaseListForm(BaseComponent, ABC):
     @property
     def btnAdd(self) -> ttk.Button:
         return self._btn_add
-    
+
     @property
     def heading(self) -> str:
         return self._heading
@@ -64,15 +64,37 @@ class BaseListForm(BaseComponent, ABC):
         self.updateList()
 
     def item(self, index: int) -> Optional[BaseListItem]:
+        """Gets the BaseListItem with the supplied index.
+        Note: The index refers to BaseListItem.id, which is the index of where it is located
+        in the Listbox widget, not the it's index in the stored list of items.
+
+        Args:
+            index (int): The index of the BaseListItem.
+
+        Returns:
+            Optional[BaseListItem]: The BaseListItem with the supplied index.
+        """
         for item in self._items:
             if item.id == index:
                 return item
         return None
-    
+
     def items(self) -> list[Any]:
+        """Returns all the items without text from the stored list of items.
+
+        Returns:
+            list[Any]: The list of items.
+        """
         return [item.item for item in self._items]
 
     def delete(self, index: int):
+        """Deletes a BaseListItem with the supplied index from the stored list of items.
+        Note: The index refers to BaseListItem.id, which is the index of where it is located
+        in the Listbox widget, not the it's index in the stored list of items.
+
+        Args:
+            index (int): The index of the BaseListItem to delete.
+        """
         refreshed_items = []
         for item in self._items:
             if item.id != index:
@@ -81,6 +103,11 @@ class BaseListForm(BaseComponent, ABC):
         self.updateList()
 
     def selectedItem(self) -> Optional[BaseListItem]:
+        """Gets the currently selected item.
+
+        Returns:
+            Optional[BaseListItem]: The BaseListItem for the currently selected item.
+        """
         selected_index = self._lst_items.selected_index()
         if selected_index is not None:
             item = self.item(selected_index)
@@ -89,10 +116,21 @@ class BaseListForm(BaseComponent, ABC):
         return None
 
     def addItem(self, item: Any, text: str = ""):
+        """Creates a new BaseListItem and adds it to the stored list of items, then updates the Listbox.
+
+        Args:
+            item (Any): The item to add.
+            text (str, optional): The text for this list item. Defaults to "".
+        """
         self._items.append(BaseListItem(item, text=text))
         self.updateList()
 
     def replaceItem(self, replacement: BaseListItem):
+        """Replaces a list item containing the index of the supplied list item with the supplied list item.
+
+        Args:
+            replacement (BaseListItem): The new list item to replace the current one with.
+        """
         refreshed_items = []
         for item in self._items:
             if item.id == replacement.id:
@@ -103,9 +141,16 @@ class BaseListForm(BaseComponent, ABC):
         self.updateList()
 
     def updateList(self):
+        """Updates the Listbox with the current list items text.
+        """
         self._lst_items.clear()
         for item in self._items:
             item.id = self._lst_items.add(item.text)
 
     def lastItem(self) -> BaseListItem:
+        """Gets the last item from the list.
+
+        Returns:
+            BaseListItem: The last item from the list.
+        """
         return self._items[-1]
