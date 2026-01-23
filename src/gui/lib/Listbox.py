@@ -15,7 +15,7 @@ class Listbox(tk.Listbox):
 
     def selected(self):
         selected_index = self.selected_index()
-        return self.get(selected_index) if selected_index else None
+        return self.get(selected_index) if selected_index is not None else None
 
     def index_of(self, x: str):
         for i in self.size():

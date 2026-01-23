@@ -1,5 +1,6 @@
 import tkinter as tk
 from src.gui.base.BaseListForm import BaseListForm
+import uuid
 
 
 class SkillsForm(BaseListForm):

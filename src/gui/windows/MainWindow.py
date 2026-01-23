@@ -7,10 +7,11 @@ from src.gui.components.PickResumeList import PickResumeList
 
 class MainWindow(BaseWindow):
 
-    def __init__(self, master, openEditorCb, newResumeCb, newCvResumeCb):
+    def __init__(self, master, openEditorCb, newResumeCb, newCvResumeCb, deleteResumeCb):
         self._frame = tk.Frame(master, padx=10, pady=10)
-        self.openEditor = openEditorCb
-        self._btn_open_cv = ttk.Button(self._frame, text="View/Edit CV", command=self.openCv)
+        self._btn_open_cv = ttk.Button(
+            self._frame, text="View/Edit CV", command=openEditorCb
+        )
         self._btn_open_cv.pack()
         self.spacing().pack()
         self._frm_new_resume = NewResumeForm(
@@ -18,7 +19,7 @@ class MainWindow(BaseWindow):
         )
         self._frm_new_resume.pack()
         self.spacing().pack()
-        self._lst_pick_resume = PickResumeList(self._frame, cmd_open=self.openResume)
+        self._lst_pick_resume = PickResumeList(self._frame, cmd_open=openEditorCb, cmd_delete=deleteResumeCb)
         self._lst_pick_resume.pack()
 
     def setResumeList(self, resume_list):
@@ -29,12 +30,6 @@ class MainWindow(BaseWindow):
 
     def hide(self):
         self._frame.pack_forget()
-
-    def openCv(self):
-        self.openEditor()
-
-    def openResume(self, title: str):
-        self.openEditor(title)
 
     @property
     def btnOpenCv(self):

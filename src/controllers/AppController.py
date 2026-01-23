@@ -29,8 +29,14 @@ class AppController(BaseController):
     def resume(self, title: str):
         if title in self.resumes.keys():
             return self.resumes[title]
-        else:
-            return None
+        return None
+
+    def deleteResume(self, title: str):
+        if title in self.resumes.keys():
+            del self.resumes[title]
+        file_path = f"{self.resumes_path}/{title}.json"
+        if os.path.exists(file_path):
+            os.remove(file_path)
 
     def resumeFromCv(self, title: str = "", author: str = ""):
         self.resumes[title] = Resume(title, author, self.cv_raw)
@@ -41,6 +47,14 @@ class AppController(BaseController):
         self.resumes[title] = Resume(title, author)
         self.saveResume(title)
         return self.resumes[title]
+
+    def overwriteCv(self, cv: Cv):
+        self.cv = cv
+        self.saveCv()
+
+    def overwriteResume(self, title: str, new_resume: Resume):
+        self.resumes[title] = new_resume
+        self.saveResume(title)
 
     def saveResume(self, title: str):
         resume = self.resumes[title]

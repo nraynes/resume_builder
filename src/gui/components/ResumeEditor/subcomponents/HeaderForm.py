@@ -79,3 +79,16 @@ class HeaderForm(BaseComponent):
     @property
     def inpAltWebsite(self):
         return self._inp_alt_website
+
+    def to_dict(self):
+        return {
+            "name": self._inp_name.get(),
+            "profession": self._inp_profession.get(),
+            "email": self._inp_email.get(),
+            "phone_number": self._inp_phone_number.get(),
+            "city": self._inp_city.get(),
+            "state": self._inp_state.get(),
+            "country": self._inp_country.get(),
+            "website": self._inp_website.get(),
+            "alt_website": self._inp_alt_website.get(),
+        }

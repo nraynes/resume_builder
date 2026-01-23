@@ -13,13 +13,14 @@ from src.gui.components.ResumeEditor.subcomponents.CertificationsForm import Cer
 
 
 class ResumeEditor(BaseComponent):
-    def __init__(self, master, openMainCb):
+    def __init__(self, master, openMainCb, saveResumeCb):
         self._frame = tk.Frame(master, padx=5, pady=5)
+        self._cv = False
 
         # Build first layer.
         layer_one = tk.Frame(self._frame)
         self._frm_meta_data = ResumeMetaDataForm(layer_one)
-        self._pnl_commands = ButtonPanel(layer_one, openMainCb)
+        self._pnl_commands = ButtonPanel(layer_one, openMainCb, saveResumeCb)
         layer_one.columnconfigure(0, weight=1)
         self._frm_meta_data.grid(row=0, column=0, sticky="EW")
         self.spacing(layer_one).grid(row=0, column=1)
@@ -57,6 +58,7 @@ class ResumeEditor(BaseComponent):
 
     def populateData(self, resume: Cv):
         is_resume = isinstance(resume, Resume)
+        self._cv = not is_resume
         title = resume.title if is_resume else "Curriculum Vitae"
         author = resume.author if is_resume else "N/A"
         self._frm_meta_data.populateData(title, author)
@@ -66,6 +68,24 @@ class ResumeEditor(BaseComponent):
         self._frm_experience.populateData(resume.workExperience.values())
         self._frm_education.populateData(resume.education.values())
         self._frm_certifications.populateData(resume.certificates.values())
+
+    def getObject(self) -> Cv:
+        data_object = {
+            "header": self._frm_header.to_dict(),
+            "summary": self._frm_summary.get(),
+            "work_experience": [work.to_dict() for work in self._frm_experience.items()],
+            "education": [edu.to_dict() for edu in self._frm_education.items()],
+            "certificates": [cert.to_dict() for cert in self._frm_certifications.items()],
+            "skills": self._frm_skills.items(),
+        }
+        if self._cv:
+            return Cv(data_object)
+        else:
+            return Resume(
+                title=self._frm_meta_data.inpTitle.get(),
+                author=self._frm_meta_data.inpAuthor.get(),
+                data=data_object
+            )
 
     @property
     def frmMetaData(self):

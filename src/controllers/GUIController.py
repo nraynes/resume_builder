@@ -1,5 +1,6 @@
 import tkinter as tk
 from src.models.Cv import Cv
+from src.models.Resume import Resume
 from src.controllers.BaseController import BaseController
 from src.gui.windows.MainWindow import MainWindow
 from src.gui.windows.EditorWindow import EditorWindow
@@ -16,8 +17,13 @@ class GUIController(BaseController):
                 openEditorCb=self.openEditorWindow,
                 newResumeCb=self.createNewResume,
                 newCvResumeCb=self.createNewResumeFromCv,
+                deleteResumeCb=self.deleteSelectedResume
             ),
-            "editor": EditorWindow(self.root, self.openMainWindow),
+            "editor": EditorWindow(
+                self.root,
+                openMainCb=self.openMainWindow,
+                saveResumeCb=self.saveActiveResume
+            ),
         }
         self.openMainWindow()
 
@@ -28,6 +34,17 @@ class GUIController(BaseController):
     @property
     def editorWindow(self) -> EditorWindow:
         return self.windows["editor"]
+
+    def deleteSelectedResume(self, title: str):
+        self.deleteResume(title)
+        self.populateMainWindowData()
+
+    def saveActiveResume(self, resume: Cv):
+        is_resume = isinstance(resume, Resume)
+        if is_resume:
+            self.overwriteResume(resume.title, resume)
+        else:
+            self.overwriteCv(resume)
 
     def createNewResume(self, title: str, author: str):
         self.newResume(title, author)
