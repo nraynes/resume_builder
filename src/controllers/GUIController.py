@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import filedialog
 from src.models.Cv import Cv
 from src.models.Resume import Resume
 from src.controllers.BaseController import BaseController
@@ -22,7 +23,8 @@ class GUIController(BaseController):
             "editor": EditorWindow(
                 self.root,
                 openMainCb=self.openMainWindow,
-                saveResumeCb=self.saveActiveResume
+                saveResumeCb=self.saveActiveResume,
+                generatePDFCb=self.outputResumePDF
             ),
         }
         self.openMainWindow()
@@ -34,6 +36,14 @@ class GUIController(BaseController):
     @property
     def editorWindow(self) -> EditorWindow:
         return self.windows["editor"]
+
+    def outputResumePDF(self, title: str):
+        resume = self.resume(title)
+        if resume is not None:
+            output_path = filedialog.asksaveasfilename(title="Select where you would like to save this PDF to")
+            if output_path[-4:] != ".pdf":
+                output_path = f"{output_path.split(".")[0]}.pdf"
+            self.pdf_service.generatePDFFromResume(resume, output_path)
 
     def deleteSelectedResume(self, title: str):
         self.deleteResume(title)

@@ -8,9 +8,10 @@ from src.models.Cv import Cv
 
 class EditorWindow(BaseWindow):
 
-    def __init__(self, master: tk.Tk, openMainCb, saveResumeCb):
+    def __init__(self, master: tk.Tk, openMainCb, saveResumeCb, generatePDFCb):
         self._canvas = tk.Canvas(master)
         self._cmd_save = saveResumeCb
+        self._cmd_pdf = generatePDFCb
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
         self._scroll_bar = ttk.Scrollbar(master, orient="vertical", command=self._canvas.yview)
@@ -19,14 +20,18 @@ class EditorWindow(BaseWindow):
         self._canvas.bind("<Configure>", self._on_canvas_configure)
         self._win_id = self._canvas.create_window((0, 0), window=self._frame, anchor="nw")
         self._canvas.configure(yscrollcommand=self._scroll_bar.set)
-        self._edt_resume = ResumeEditor(self._frame, openMainCb, self.saveResume)
+        self._edt_resume = ResumeEditor(self._frame, openMainCb, self.saveResume, self.generatePDF)
         self._edt_resume.pack()
         self._canvas.update_idletasks()
         self._resize_canvas()
         self._canvas.bind_all("<MouseWheel>", self.on_mousewheel)
         self._canvas.bind_all("<Button-4>", self.on_mousewheel)
         self._canvas.bind_all("<Button-5>", self.on_mousewheel)
-        
+
+    def generatePDF(self):
+        self.saveResume()
+        self._cmd_pdf(self._edt_resume.frmMetaData.inpTitle.get())
+
     def saveResume(self):
         self._cmd_save(self._edt_resume.getObject())
 

@@ -119,7 +119,9 @@ class PDFService:
             self.section_title("Education")
             for edu in education:
                 self.pdf.set_font("Helvetica", "B", 10)
-                self.pdf.cell(0, 5, f"{edu.degreeType} - {edu.major}", ln=1)
+                formatted_degree = f"{edu.degreeType.name[0].upper()}{edu.degreeType.name[1:].lower()}"
+                
+                self.pdf.cell(0, 5, f"{formatted_degree} - {edu.major}", ln=1)
                 self.pdf.set_font("Helvetica", "", 10)
                 if edu.stillAttending:
                     grad = "Expected Graduation"

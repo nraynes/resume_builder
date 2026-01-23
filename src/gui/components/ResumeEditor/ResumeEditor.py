@@ -13,14 +13,16 @@ from src.gui.components.ResumeEditor.subcomponents.CertificationsForm import Cer
 
 
 class ResumeEditor(BaseComponent):
-    def __init__(self, master, openMainCb, saveResumeCb):
+    def __init__(self, master, openMainCb, saveResumeCb, generatePDFCb):
         self._frame = tk.Frame(master, padx=5, pady=5)
         self._cv = False
 
         # Build first layer.
         layer_one = tk.Frame(self._frame)
         self._frm_meta_data = ResumeMetaDataForm(layer_one)
-        self._pnl_commands = ButtonPanel(layer_one, openMainCb, saveResumeCb)
+        self._pnl_commands = ButtonPanel(
+            layer_one, openMainCb, saveResumeCb, generatePDFCb
+        )
         layer_one.columnconfigure(0, weight=1)
         self._frm_meta_data.grid(row=0, column=0, sticky="EW")
         self.spacing(layer_one).grid(row=0, column=1)
