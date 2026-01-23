@@ -31,10 +31,12 @@ class CertificationsEditor(BaseComponent):
         self._chk_does_not_expire.grid(row=3, column=3, sticky="EW")
 
     def showExpDate(self):
+        self._dat_exp.undefault()
         self._dat_exp.grid(row=2, column=2, columnspan=2, sticky="EW")
         self._dat_issued.grid(row=2, column=0, columnspan=2,  sticky="EW")
 
     def hideExpDate(self):
+        self._dat_exp.default()
         self._dat_exp.grid_forget()
         self._dat_issued.grid(row=2, column=0, columnspan=4, sticky="EW")
 

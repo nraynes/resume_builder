@@ -2,11 +2,13 @@ from src.gui.base.BaseComponent import BaseComponent
 import tkinter as tk
 from src.gui.lib.DateEntry import DateEntry
 from datetime import datetime
+from src.validation.Validate import Validate
 
 
 class LabeledDateInput(BaseComponent):
     def __init__(self, master, lbl_text: str = "", *args, **kwargs):
         self._frame = tk.Frame(master)
+        self._stored_date = datetime.now()
         lbl = tk.Label(self._frame, text=lbl_text)
         self._inp = DateEntry(self._frame, *args, **kwargs)
         self._frame.columnconfigure(1, weight=1)
@@ -23,6 +25,13 @@ class LabeledDateInput(BaseComponent):
     def setValue(self, date: datetime):
         self.clear()
         self._inp.set_date(date)
+        
+    def undefault(self):
+        self.setValue(self._stored_date)
+        
+    def default(self):
+        self._stored_date = self.get()
+        self.setValue(datetime.strptime(Validate.epoch, Validate.isodateformat))
 
     @property
     def inp(self):

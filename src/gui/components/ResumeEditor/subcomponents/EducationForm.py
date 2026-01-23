@@ -15,10 +15,18 @@ class EducationForm(BaseEditorListForm):
             self.addItem(edu, f"{edu.degreeType.name} - {edu.major}")
 
     def cmdAdd(self):
-        pass
+        self.addItem(Education())
+        self._sub_window = EducationWindow(
+            self._frame, education=self.lastItem().item
+        )
 
     def cmdDelete(self):
-        pass
+        if self.selectedItem() is not None:
+            self.delete(self.selectedItem().id)
 
     def cmdEdit(self):
-        self._sub_window = EducationWindow(self._frame)
+        selected_education = self.selectedItem()
+        if selected_education:
+            self._sub_window = EducationWindow(
+                self._frame, education=selected_education.item
+            )

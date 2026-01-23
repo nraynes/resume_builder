@@ -4,7 +4,7 @@ from src.validation.Validate import Validate
 class Header:
     def __init__(
         self,
-        data
+        data = {}
     ):
         self._name = data["name"] if "name" in data.keys() else ""
         self._profession = data["profession"] if "profession" in data.keys() else ""

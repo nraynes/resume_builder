@@ -33,34 +33,54 @@ class BaseListForm(BaseComponent, ABC):
         self.spacing().grid(row=4, column=1)
         self.spacing().grid(row=4, column=3)
         self._btn_add.grid(row=4, column=4, sticky="EW")
-        
+
     def clear(self):
         self._items = []
         self.updateList()
-        
-    def item(self, index: int):
+
+    def item(self, index: int) -> BaseListItem:
         for item in self._items:
             if item.id == index:
                 return item
         return None
-        
-    def selectedItem(self):
+
+    def delete(self, index: int):
+        refreshed_items = []
+        for item in self._items:
+            if item.id != index:
+                refreshed_items.append(item)
+        self._items = refreshed_items
+        self.updateList()
+
+    def selectedItem(self) -> BaseListItem:
         selected_index = self._lst_items.selected_index()
         if selected_index is not None:
             item = self.item(selected_index)
             if item is not None:
-                return item.item
+                return item
         return None
 
     def addItem(self, item, text: str = ""):
         self._items.append(BaseListItem(item, text=text))
         self.updateList()
 
+    def replaceItem(self, replacement: BaseListItem):
+        refreshed_items = []
+        for item in self._items:
+            if item.id == replacement.id:
+                refreshed_items.append(replacement)
+            else:
+                refreshed_items.append(item)
+        self._items = refreshed_items
+        self.updateList()
+
     def updateList(self):
         self._lst_items.clear()
         for item in self._items:
             item.id = self._lst_items.add(item.text)
-            
+
+    def lastItem(self) -> BaseListItem:
+        return self._items[-1]
 
     @property
     def lstItems(self):

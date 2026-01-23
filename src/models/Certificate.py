@@ -4,12 +4,18 @@ import uuid
 
 
 class Certificate:
-    def __init__(self, data):
+    def __init__(self, data = {}):
         self._id = data["id"] if "id" in data else str(uuid.uuid4())
         self._certificate_name = data["certificate_name"] if "certificate_name" in data else ""
         self._issuer = data["issuer"] if "issuer" in data else ""
-        self._issue_date = datetime.strptime(data["issue_date"], Validate.isodateformat) if "issue_date" in data else Validate.epoch
-        self._exp_date = datetime.strptime(data["exp_date"], Validate.isodateformat) if "exp_date" in data else Validate.epoch
+        self._issue_date = datetime.strptime(
+            data["issue_date"] if "issue_date" in data else Validate.epoch,
+            Validate.isodateformat,
+        )
+        self._exp_date = datetime.strptime(
+            data["exp_date"] if "exp_date" in data else Validate.epoch,
+            Validate.isodateformat,
+        )
         self._does_not_expire = data["does_not_expire"] if "does_not_expire" in data else False
 
     @property

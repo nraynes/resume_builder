@@ -5,6 +5,7 @@ from src.gui.lib.LabeledInput import LabeledInput
 from src.gui.lib.LabeledDateInput import LabeledDateInput
 from src.gui.lib.LabeledCombo import LabeledCombo
 from src.enums.Degree import Degree
+from src.models.Education import Education
 
 
 class EducationEditor(BaseComponent):
@@ -18,17 +19,43 @@ class EducationEditor(BaseComponent):
         self._inp_major = LabeledInput(self._frame, "Major:")
         self._dat_grad = LabeledDateInput(self._frame, "Graduation Date:")
         lbl_still_attending = tk.Label(self._frame, text="Still Attending:")
-        self._chk_still_attending = tk.Checkbutton(self._frame)
+        self._checked = tk.IntVar(value=0)
+        self._checked.trace_add("write", self.onCheck)
+        self._chk_still_attending = tk.Checkbutton(self._frame, variable=self._checked, onvalue=1, offvalue=0)
         self._btn_submit = ttk.Button(self._frame, text="Save", command=self.save)
 
         self._inp_school_name.grid(row=0, column=0, columnspan=3, sticky="EW")
         self._inp_major.grid(row=1, column=0, columnspan=3, sticky="EW")
         self._cmb_degree_type.grid(row=2, column=0, columnspan=3, sticky="EW")
-        self._dat_grad.grid(row=3, column=0, sticky="EW")
+        self.onCheck()
         lbl_still_attending.grid(row=3, column=1, sticky="E")
         self._chk_still_attending.grid(row=3, column=2, sticky="EW")
         self._btn_submit.grid(row=4, column=0, columnspan=3, sticky="EW")
-        
+
+    def showGradDate(self):
+        self._dat_grad.undefault()
+        self._dat_grad.grid(row=3, column=0, sticky="EW")
+
+    def hideGradDate(self):
+        self._dat_grad.default()
+        self._dat_grad.grid_forget()
+
+    def onCheck(self, *args):
+        if self._checked.get() == 0:
+            self.showGradDate()
+        else:
+            self.hideGradDate()
+
+    def populateData(self, education: Education):
+        self._inp_school_name.setValue(education.schoolName)
+        self._inp_major.setValue(education.major)
+        self._cmb_degree_type.setValue(education.degreeType.name)
+        self._dat_grad.setValue(education.graduationDate)
+        if education.stillAttending:
+            self._chk_still_attending.select()
+        else:
+            self._chk_still_attending.deselect()
+
     def save(self):
         self.cmd_close()
 
@@ -51,7 +78,7 @@ class EducationEditor(BaseComponent):
     @property
     def chkStillAttending(self):
         return self._chk_still_attending
-    
+
     @property
     def btnSubmit(self):
         return self._btn_submit

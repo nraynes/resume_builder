@@ -5,12 +5,12 @@ import uuid
 
 
 class Education:
-    def __init__(self, data):
+    def __init__(self, data = {}):
         self._id = data["id"] if "id" in data else str(uuid.uuid4())
         self._school_name = data["school_name"] if "school_name" in data else ""
         self._degree_type = Degree[data["degree_type"]] if "degree_type" in data else Degree.NONE
         self._major = data["major"] if "major" in data else ""
-        self._graduation_date = datetime.strptime(data["graduation_date"], Validate.isodateformat) if "graduation_date" in data else Validate.epoch  # Or expected.
+        self._graduation_date = datetime.strptime(data["graduation_date"] if "graduation_date" in data else Validate.epoch, Validate.isodateformat)
         self._still_attending = data["still_attending"] if "still_attending" in data else False
 
     @property
@@ -28,10 +28,6 @@ class Education:
     @property
     def major(self):
         return self._major
-
-    @property
-    def major(self):
-        return self._school_name
 
     @property
     def graduationDate(self):

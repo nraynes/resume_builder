@@ -5,17 +5,24 @@ import uuid
 
 
 class Experience:
-    def __init__(self, data):
+    def __init__(self, data = {}):
         self._id = data["id"] if "id" in data else str(uuid.uuid4())
         self._job_title = data["job_title"] if "job_title" in data else ""
         self._company = data["company"] if "company" in data else ""
         self._company_location = data["company_location"] if "company_location" in data else ""
-        self._started_on = datetime.strptime(data["started_on"], Validate.isodateformat) if "started_on" in data else Validate.epoch
-        self._ended_on = datetime.strptime(data["ended_on"], Validate.isodateformat) if "ended_on" in data else Validate.epoch
+        self._started_on = datetime.strptime(
+            data["started_on"] if "started_on" in data else Validate.epoch,
+            Validate.isodateformat,
+        )
+        self._ended_on = datetime.strptime(
+            data["ended_on"] if "ended_on" in data else Validate.epoch,
+            Validate.isodateformat,
+        )
         self._current_position = data["current_position"] if "current_position" in data else False
         self._bullets = {}
-        for bullet in data["bullets"]:
-            self._bullets[bullet["id"]] = bullet
+        if "bullets" in data:
+            for bullet in data["bullets"]:
+                self._bullets[bullet["id"]] = bullet
 
     @property
     def id(self):
