@@ -4,20 +4,6 @@ A basic Python GUI app that lets you define a CV and build and tailor multiple r
 
 ---
 
-## Table of Contents
-- [Overview](#overview)
-- [Features](#features)
-- [Tech Stack](#tech-stack)
-- [Getting Started](#getting-started)
-- [Usage](#usage)
-- [Configuration](#configuration)
-- [Project Structure](#project-structure)
-- [Roadmap](#roadmap)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
 ## Overview
 
 This app is designed to let the user add all of the information from their CV, which should include 
