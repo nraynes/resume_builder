@@ -2,9 +2,10 @@ from enum import Enum
 
 class Degree(Enum):
     NONE = 0
-    ASSOCIATES = 1
-    BACHELORS = 2
-    MASTERS = 3
-    DOCTORATE = 4
-    PHD = 5
+    DIPLOMA = 1
+    ASSOCIATES = 2
+    BACHELORS = 3
+    MASTERS = 4
+    DOCTORATE = 5
+    PHD = 6
     
