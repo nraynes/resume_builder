@@ -1,10 +1,12 @@
 import tkinter as tk
 from src.gui.base.BaseListForm import BaseListForm
+from typing import Callable
 
 
 class SkillsForm(BaseListForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, update_skills_reference_cb: Callable, **kwargs):
         self._heading = "Skills"
+        self.update_skills_reference_cb = update_skills_reference_cb
         super().__init__(*args, **kwargs)
         self._frame.rowconfigure(2, weight=1)
         self._inp_skill = tk.Entry(self._frame)
@@ -18,12 +20,15 @@ class SkillsForm(BaseListForm):
     def cmdAdd(self):
         skill = self._inp_skill.get()
         self.addItem(skill, skill)
+        self.update_skills_reference_cb()
 
     def cmdDelete(self):
         if self.selectedItem() is not None:
             self.delete(self.selectedItem().id)
+            self.update_skills_reference_cb()
 
     def populateData(self, skills: list[str]):
         self.clear()
         for skill in skills:
             self.addItem(skill, skill)
+        self.update_skills_reference_cb()

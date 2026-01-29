@@ -3,17 +3,7 @@ from datetime import datetime
 
 class DateUtils:
     iso_date_format = "%Y-%m-%dT%H:%M:%S.%f"
-    str_epoch = "1970-01-01T00:00:00.000000"
-
-    @classmethod
-    def epoch(cls) -> datetime:
-        """Returns a datetime object representing epoch time.
-        Epoch time is Midnight on January 1, 1970.
-
-        Returns:
-            datetime: datetime object representing epoch time.
-        """
-        return datetime.strptime(cls.str_epoch, cls.iso_date_format)
+    epoch = "1970-01-01T00:00:00.000000"
 
     @classmethod
     def datetime(cls, x: str) -> datetime:

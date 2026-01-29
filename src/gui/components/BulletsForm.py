@@ -1,4 +1,5 @@
 from src.gui.base.BaseEditorListForm import BaseEditorListForm
+from src.models.Bullet import Bullet
 from typing import Callable
 
 
@@ -11,7 +12,7 @@ class BulletsForm(BaseEditorListForm):
         self.close_bullet_cb = close_bullet_cb
 
     def cmdAdd(self):
-        self.addItem("", "")
+        self.addItem(Bullet())
         self.edit_bullet_cb(self.lastItem())
 
     def cmdDelete(self):
@@ -23,6 +24,6 @@ class BulletsForm(BaseEditorListForm):
         if self.selectedItem() is not None:
             self.edit_bullet_cb(self.selectedItem())
 
-    def populateData(self, bullets: list[str]):
+    def populateData(self, bullets: list[Bullet]):
         for bullet in bullets:
-            self.addItem(bullet, bullet)
+            self.addItem(bullet, bullet.text)

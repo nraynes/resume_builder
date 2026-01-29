@@ -14,6 +14,7 @@ class LabeledDateInput(BaseEntry):
         self._inp = DateEntry(self._frame, *args, **kwargs)
         lbl.grid(row=0, sticky="E")
         self._inp.grid(row=0, column=1, sticky="EW")
+        self._inp.set_date(datetime.now())
 
     def get(self) -> datetime:
         return datetime.combine(self._inp.get_date(), datetime.min.time())
@@ -27,11 +28,3 @@ class LabeledDateInput(BaseEntry):
     def setValue(self, x: datetime):
         self.clear()
         self._inp.set_date(x)
-
-    def undefault(self):
-        if self._stored_date is not None:
-            self.setValue(self._stored_date)
-
-    def default(self):
-        self._stored_date = self.get()
-        self.setValue(DateUtils.epoch())

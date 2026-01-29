@@ -1,17 +1,20 @@
-class Header:
+from src.models.BaseModel import BaseModel
+
+
+class Header(BaseModel):
     def __init__(
         self,
         data: dict = {}
     ):
-        self._name = data["name"] if "name" in data.keys() else ""
-        self._profession = data["profession"] if "profession" in data.keys() else ""
-        self._email = data["email"] if "email" in data.keys() else ""
-        self._phone_number = data["phone_number"] if "phone_number" in data.keys() else ""
-        self._city = data["city"] if "city" in data.keys() else ""
-        self._state = data["state"] if "state" in data.keys() else ""
-        self._country = data["country"] if "country" in data.keys() else ""
-        self._website = data["website"] if "website" in data.keys() else ""
-        self._alt_website = data["alt_website"] if "alt_website" in data.keys() else ""
+        self._name = self.extract(data, "name", "")
+        self._profession = self.extract(data, "profession", "")
+        self._email = self.extract(data, "email", "")
+        self._phone_number = self.extract(data, "phone_number", "")
+        self._city = self.extract(data, "city", "")
+        self._state = self.extract(data, "state", "")
+        self._country = self.extract(data, "country", "")
+        self._website = self.extract(data, "website", "")
+        self._alt_website = self.extract(data, "alt_website", "")
 
     @property
     def name(self) -> str:

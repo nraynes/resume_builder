@@ -11,26 +11,27 @@ from typing import Callable, Optional
 
 
 class ExperienceEditor(BaseComponent):
-    def __init__(self, master: tk.Toplevel, save_experience_cb: Callable):
+    def __init__(self, master: tk.Toplevel, save_experience_cb: Callable, skills: list[str]):
         self._frame = tk.Frame(master, padx=10, pady=10)
-        self._frame.columnconfigure(0, weight=1)
-        self._frame.columnconfigure(1, weight=1)
-        self._inp_job_title = LabeledInput(self._frame, "Job Title:")
-        self._inp_company = LabeledInput(self._frame, "Company:")
-        self._inp_company_location = LabeledInput(self._frame, "Company Location:")
-        self._dat_started_on = LabeledDateInput(self._frame, "Started On:")
-        self._dat_ended_on = LabeledDateInput(self._frame, "Ended On:")
-        lbl_current_position = tk.Label(self._frame, text="Current Position:")
+        self._left_container = tk.Frame(self._frame, padx=10, pady=10)
+        self._left_container.columnconfigure(0, weight=1)
+        self._left_container.columnconfigure(1, weight=1)
+        self._inp_job_title = LabeledInput(self._left_container, "Job Title:")
+        self._inp_company = LabeledInput(self._left_container, "Company:")
+        self._inp_company_location = LabeledInput(self._left_container, "Company Location:")
+        self._dat_started_on = LabeledDateInput(self._left_container, "Started On:")
+        self._dat_ended_on = LabeledDateInput(self._left_container, "Ended On:")
+        lbl_current_position = tk.Label(self._left_container, text="Current Position:")
         self._checked = tk.IntVar(value=0)
         self._checked.trace_add("write", self.onCheck)
-        self._chk_current_position = tk.Checkbutton(self._frame, variable=self._checked, onvalue=1, offvalue=0)
+        self._chk_current_position = tk.Checkbutton(self._left_container, variable=self._checked, onvalue=1, offvalue=0)
         self._frm_bullets = BulletsForm(
-            self._frame,
+            self._left_container,
             edit_bullet_cb=self.showBulletEditor,
-            close_bullet_cb=self.hideBulletEditor
+            close_bullet_cb=self.hideBulletEditor,
         )
-        self._edt_bullet = BulletEditor(self._frame, save_bullet_cb=self.hideBulletEditor)
-        self._btn_submit = ttk.Button(self._frame, text="Save", command=save_experience_cb)
+        self._btn_submit = ttk.Button(self._left_container, text="Save", command=save_experience_cb)
+        self._edt_bullet = BulletEditor(self._frame, save_bullet_cb=self.hideBulletEditor, skills=skills)
 
         self._inp_job_title.grid(row=0, column=0, columnspan=4, sticky="EW")
         self._inp_company.grid(row=1, column=0, columnspan=4, sticky="EW")
@@ -42,9 +43,10 @@ class ExperienceEditor(BaseComponent):
         self.spacing().grid(row=4)
         self._frm_bullets.grid(row=5, column=0, columnspan=4, sticky="EW")
         self.spacing().grid(row=6)
-        self.spacing().grid(row=7)
-        self._btn_submit.grid(row=9, column=0, sticky="EW")
+        self._btn_submit.grid(row=7, column=0, sticky="W")
         
+        self._left_container.grid(row=0, column=0, sticky="N")
+
     @property
     def inpJobTitle(self) -> LabeledInput:
         return self._inp_job_title
@@ -82,11 +84,9 @@ class ExperienceEditor(BaseComponent):
         return self._btn_submit
 
     def showEndDate(self):
-        self._dat_ended_on.undefault()
         self._dat_ended_on.grid(row=3, column=1, sticky="EW")
 
     def hideEndDate(self):
-        self._dat_ended_on.default()
         self._dat_ended_on.grid_forget()
 
     def getObject(self) -> Experience:
@@ -98,7 +98,7 @@ class ExperienceEditor(BaseComponent):
                 "started_on": self._dat_started_on.getString(),
                 "ended_on": self._dat_ended_on.getString(),
                 "current_position": bool(self._checked.get()),
-                "bullets": self._frm_bullets.items(),
+                "bullets": [bullet.to_dict() for bullet in self._frm_bullets.items()],
             }
         )
 
@@ -122,7 +122,7 @@ class ExperienceEditor(BaseComponent):
 
     def showBulletEditor(self, bullet: BaseListItem):
         self._edt_bullet.populateData(bullet)
-        self._edt_bullet.grid(row=8, column=0, columnspan=4, sticky="EW")
+        self._edt_bullet.grid(row=0, column=1, sticky="N")
 
     def hideBulletEditor(self, bullet: Optional[BaseListItem] = None):
         if bullet is not None:

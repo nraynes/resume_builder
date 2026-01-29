@@ -168,7 +168,7 @@ class PDFService:
                 )
                 self.pdf.ln(1)
                 for bullet in job.bullets:
-                    self.bullet(bullet)
+                    self.bullet(bullet.text)
                 self.pdf.ln(2)
 
     def generateEducation(self, education: list[Education]):

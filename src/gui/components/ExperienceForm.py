@@ -9,7 +9,16 @@ class ExperienceForm(BaseEditorListForm):
         self._heading = "Work Experience"
         self._sub_window = None
         self._active_list_item = None
+        self._skills = []
         super().__init__(*args, **kwargs)
+        
+    @property
+    def skills(self) -> list[str]:
+        return self._skills
+    
+    @skills.setter
+    def skills(self, skills: list[str]):
+        self._skills = skills
 
     def cmdAdd(self):
         self.addItem(Experience())
@@ -47,4 +56,5 @@ class ExperienceForm(BaseEditorListForm):
             self._frame,
             experience=self._active_list_item.item,
             save_experience_cb=self.saveActiveListItem,
+            skills=self._skills
         )

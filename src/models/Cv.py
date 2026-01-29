@@ -1,26 +1,18 @@
 from src.models.Header import Header
+from src.models.BaseModel import BaseModel
 from src.models.Experience import Experience
 from src.models.Education import Education
 from src.models.Certificate import Certificate
 
 
-class Cv:
+class Cv(BaseModel):
     def __init__(self, data: dict = {}):
-        self._header = Header(data["header"] if "header" in data.keys() else {})
-        self._summary = data["summary"] if "summary" in data.keys() else ""
-        self._education = []
-        self._skills = data["skills"] if "skills" in data.keys() else []
-        self._certificates = []
-        self._work_experience = []
-        if "education" in data.keys():
-            for edu in data["education"]:
-                self._education.append(Education(edu))
-        if "certificates" in data.keys():
-            for cert in data["certificates"]:
-                self._certificates.append(Certificate(cert))
-        if "work_experience" in data.keys():
-            for work in data["work_experience"]:
-                self._work_experience.append(Experience(work))
+        self._header = self.extract(data, "header", Header(), Header)
+        self._summary = self.extract(data, "summary", "")
+        self._education = [Education(edu) for edu in self.extract(data, "education", [])]
+        self._skills = self.extract(data, "skills", [])
+        self._certificates = [Certificate(edu) for edu in self.extract(data, "certificates", [])]
+        self._work_experience = [Experience(edu) for edu in self.extract(data, "work_experience", [])]
 
     @property
     def header(self) -> Header:

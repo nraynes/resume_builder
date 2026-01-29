@@ -11,12 +11,13 @@ class ExperienceModal(BaseModal):
         self,
         master: tk.Frame,
         experience: Experience,
-        save_experience_cb: Callable
+        save_experience_cb: Callable,
+        skills: list[str]
     ):
         self._frame = tk.Toplevel(master)
         self._frame.title("Experience Editor")
         self.save_experience_cb = save_experience_cb
-        self._edt_experience = ExperienceEditor(self._frame, save_experience_cb=self.save)
+        self._edt_experience = ExperienceEditor(self._frame, save_experience_cb=self.save, skills=skills)
 
         self._edt_experience.pack()
         self.populateData(experience)

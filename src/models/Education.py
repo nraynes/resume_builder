@@ -1,15 +1,16 @@
 from src.utils.DateUtils import DateUtils
+from src.models.BaseModel import BaseModel
 from src.enums.Degree import Degree
 from datetime import datetime
 
 
-class Education:
+class Education(BaseModel):
     def __init__(self, data: dict = {}):
-        self._school_name = data["school_name"] if "school_name" in data else ""
-        self._degree_type = Degree[data["degree_type"]] if "degree_type" in data else Degree.NONE
-        self._major = data["major"] if "major" in data else ""
-        self._graduation_date = DateUtils.datetime(data["graduation_date"]) if "graduation_date" in data else DateUtils.epoch()
-        self._still_attending = data["still_attending"] if "still_attending" in data else False
+        self._school_name = self.extract(data, "school_name", "")
+        self._degree_type = Degree[self.extract(data, "degree_type", "NONE")]
+        self._major = self.extract(data, "major", "")
+        self._graduation_date = self.extract(data, "graduation_date", datetime.now(), DateUtils.datetime)
+        self._still_attending = self.extract(data, "still_attending", False)
 
     @property
     def schoolName(self) -> str:

@@ -11,8 +11,10 @@ class BaseListForm(BaseComponent, ABC):
     _heading: str
     _items: list[BaseListItem]
 
-    def __init__(self, master: tk.Frame):
-        self._frame = tk.Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
+    def __init__(self, master: tk.Frame, *args, **kwargs):
+        self._frame = tk.Frame(
+            master, padx=5, pady=5, borderwidth=1, relief="solid", *args, **kwargs
+        )
         self._frame.columnconfigure(0, weight=1)
         self._frame.columnconfigure(1, weight=0)
         self._frame.columnconfigure(2, weight=1)

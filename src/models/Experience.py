@@ -1,19 +1,18 @@
 from src.utils.DateUtils import DateUtils
+from src.models.BaseModel import BaseModel
+from src.models.Bullet import Bullet
 from datetime import datetime
 
 
-class Experience:
+class Experience(BaseModel):
     def __init__(self, data: dict = {}):
-        self._job_title = data["job_title"] if "job_title" in data else ""
-        self._company = data["company"] if "company" in data else ""
-        self._company_location = data["company_location"] if "company_location" in data else ""
-        self._started_on = DateUtils.datetime(data["started_on"]) if "started_on" in data else DateUtils.epoch()
-        self._ended_on = DateUtils.datetime(data["ended_on"]) if "ended_on" in data else DateUtils.epoch()
-        self._current_position = data["current_position"] if "current_position" in data else False
-        self._bullets = []
-        if "bullets" in data:
-            for bullet in data["bullets"]:
-                self._bullets.append(bullet)
+        self._job_title = self.extract(data, "job_title", "")
+        self._company = self.extract(data, "company", "")
+        self._company_location = self.extract(data, "company_location", "")
+        self._started_on = self.extract(data, "started_on", datetime.now(), DateUtils.datetime)
+        self._ended_on = self.extract(data, "ended_on", datetime.now(), DateUtils.datetime)
+        self._current_position = self.extract(data, "current_position", False)
+        self._bullets = [Bullet(bullet) for bullet in self.extract(data, "bullets", [])]
 
     @property
     def jobTitle(self) -> str:
@@ -51,5 +50,5 @@ class Experience:
             "started_on": DateUtils.string(self._started_on),
             "ended_on": DateUtils.string(self._ended_on),
             "current_position": self._current_position,
-            "bullets": self._bullets,
+            "bullets": [bullet.to_dict() for bullet in self._bullets],
         }

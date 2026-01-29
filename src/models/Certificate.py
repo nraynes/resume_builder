@@ -1,14 +1,15 @@
 from src.utils.DateUtils import DateUtils
+from src.models.BaseModel import BaseModel
 from datetime import datetime
 
 
-class Certificate:
+class Certificate(BaseModel):
     def __init__(self, data: dict = {}):
-        self._certificate_name = data["certificate_name"] if "certificate_name" in data else ""
-        self._issuer = data["issuer"] if "issuer" in data else ""
-        self._issue_date = DateUtils.datetime(data["issue_date"]) if "issue_date" in data else DateUtils.epoch()
-        self._exp_date = DateUtils.datetime(data["exp_date"]) if "exp_date" in data else DateUtils.epoch()
-        self._does_not_expire = data["does_not_expire"] if "does_not_expire" in data else False
+        self._certificate_name = self.extract(data, "certificate_name", "")
+        self._issuer = self.extract(data, "issuer", "")
+        self._issue_date = self.extract(data, "issue_date", datetime.now(), DateUtils.datetime)
+        self._exp_date = self.extract(data, "exp_date", datetime.now(), DateUtils.datetime)
+        self._does_not_expire = self.extract(data, "does_not_expire", False)
 
     @property
     def certificateName(self) -> str:

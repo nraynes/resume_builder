@@ -50,7 +50,7 @@ class ResumeEditor(BaseComponent):
         layer_three = tk.Frame(self._frame)
         layer_three.columnconfigure(0, weight=1)
         self._frm_summary = SummaryForm(layer_three)
-        self._frm_skills = SkillsForm(layer_three)
+        self._frm_skills = SkillsForm(layer_three, update_skills_reference_cb=self.updateSkillsReferenceInExperience)
         self._frm_summary.grid(row=0, column=0, sticky="EW")
         self.spacing(layer_three).grid(row=0, column=1)
         self._frm_skills.grid(row=0, column=2, sticky="NSEW")
@@ -72,7 +72,7 @@ class ResumeEditor(BaseComponent):
     @property
     def frmMetaData(self) -> ResumeMetaDataForm:
         return self._frm_meta_data
-    
+
     @property
     def pnlCommands(self) -> ButtonPanel:
         return self._pnl_commands
@@ -100,10 +100,13 @@ class ResumeEditor(BaseComponent):
     @property
     def frmCertifications(self) -> CertificationsForm:
         return self._frm_certifications    
-    
+
     @property
     def isCv(self) -> bool:
         return self._is_cv
+
+    def updateSkillsReferenceInExperience(self):
+        self._frm_experience.skills = self._frm_skills.items()
 
     def populateData(self, resume: Cv):
         is_resume = isinstance(resume, Resume)
