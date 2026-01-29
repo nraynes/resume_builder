@@ -3,6 +3,24 @@ from typing import Optional
 
 
 class Listbox(tk.Listbox):
+    def grid(self, *args, **kwargs):
+        self.master.after(0, lambda: tk.Listbox.grid(self, *args, **kwargs))
+
+    def pack(self, *args, **kwargs):
+        self.master.after(0, lambda: tk.Listbox.pack(self, *args, **kwargs))
+
+    def place(self, *args, **kwargs):
+        self.master.after(0, lambda: tk.Listbox.place(self, *args, **kwargs))
+
+    def grid_forget(self, *args, **kwargs):
+        self.master.after(0, lambda: tk.Listbox.grid_forget(self, *args, **kwargs))
+
+    def pack_forget(self, *args, **kwargs):
+        self.master.after(0, lambda: tk.Listbox.pack_forget(self, *args, **kwargs))
+
+    def place_forget(self, *args, **kwargs):
+        self.master.after(0, lambda: tk.Listbox.place_forget(self, *args, **kwargs))
+
     def clear(self):
         self.delete(0, tk.END)
 

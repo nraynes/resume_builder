@@ -3,6 +3,8 @@ from tkinter import ttk
 from src.gui.base.BaseComponent import BaseComponent
 from src.gui.modals.MessageModal import MessageModal
 from typing import Callable
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Button import Button
 
 
 class ButtonPanel(BaseComponent):
@@ -16,10 +18,10 @@ class ButtonPanel(BaseComponent):
     ):
         self.save_resume_cb = save_resume_cb
         self._sub_window = None
-        self._frame = tk.Frame(master, padx=5, pady=5, borderwidth=2, relief="sunken")
-        self._btn_back = ttk.Button(self._frame, text="Back", command=open_main_cb)
-        self._btn_save = ttk.Button(self._frame, text="Save Resume", command=self.saveResume)
-        self._btn_generate = ttk.Button(
+        self._frame = Frame(master, padx=5, pady=5, borderwidth=2, relief="sunken")
+        self._btn_back = Button(self._frame, text="Back", command=open_main_cb)
+        self._btn_save = Button(self._frame, text="Save Resume", command=self.saveResume)
+        self._btn_generate = Button(
             self._frame, text="Generate PDF", command=generate_pdf_cb
         )
 

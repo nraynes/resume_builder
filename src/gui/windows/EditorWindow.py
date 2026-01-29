@@ -1,10 +1,12 @@
 import tkinter as tk
-from tkinter import ttk
 import platform
 from src.gui.base.BaseWindow import BaseWindow
 from src.gui.components.ResumeEditor import ResumeEditor
 from src.models.Cv import Cv
 from typing import Callable, Optional
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Canvas import Canvas
+from src.gui.lib.Scrollbar import Scrollbar
 
 
 class EditorWindow(BaseWindow):
@@ -16,13 +18,13 @@ class EditorWindow(BaseWindow):
         save_resume_cb: Callable,
         generate_pdf_cb: Callable
     ):
-        self._canvas = tk.Canvas(master)
+        self._canvas = Canvas(master)
         self.save_resume_cb = save_resume_cb
         self.generate_pdf_cb = generate_pdf_cb
         self.screen_width = master.winfo_screenwidth()
         self.screen_height = master.winfo_screenheight()
-        self._scroll_bar = ttk.Scrollbar(master, orient="vertical", command=self._canvas.yview)
-        self._frame = ttk.Frame(self._canvas, padding=10)
+        self._scroll_bar = Scrollbar(master, orient="vertical", command=self._canvas.yview)
+        self._frame = Frame(self._canvas, padx=10, pady=10)
         self._frame.bind("<Configure>", self.onFrameConfigure)
         self._canvas.bind("<Configure>", self.onCanvasConfigure)
         self._win_id = self._canvas.create_window((0, 0), window=self._frame, anchor="nw")
@@ -31,12 +33,12 @@ class EditorWindow(BaseWindow):
             self._frame,
             open_main_cb=open_main_cb,
             save_resume_cb=self.saveResume,
-            generate_pdf_cb=self.generatePDF
+            generate_pdf_cb=self.generatePDF,
+            resize_canvas_cb=self.resizeCanvas
         )
 
         self._edt_resume.pack()
         self._canvas.update_idletasks()
-        self.resizeCanvas()
         self._canvas.bind_all("<MouseWheel>", self.onMousewheel)
         self._canvas.bind_all("<Button-4>", self.onMousewheel)
         self._canvas.bind_all("<Button-5>", self.onMousewheel)

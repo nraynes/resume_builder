@@ -3,6 +3,8 @@ from tkinter import ttk
 from src.gui.base.BaseComponent import BaseComponent
 from src.gui.lib.Listbox import Listbox
 from typing import Callable
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Button import Button
 
 
 class PickResumeList(BaseComponent):
@@ -12,12 +14,12 @@ class PickResumeList(BaseComponent):
         open_editor_cb: Callable,
         delete_resume_cb: Callable
     ):
-        self._frame = tk.Frame(master, padx=5, pady=5)
+        self._frame = Frame(master, padx=5, pady=5)
         self.open_editor_cb = open_editor_cb
         self.delete_resume_cb = delete_resume_cb
         self._lst_resumes = Listbox(self._frame)
-        self._btn_open_resume = ttk.Button(self._frame, text="View/Edit Resume", command=self.openResume)
-        self._btn_delete_resume = ttk.Button(self._frame, text="Delete Resume", command=self.deleteResume)
+        self._btn_open_resume = Button(self._frame, text="View/Edit Resume", command=self.openResume)
+        self._btn_delete_resume = Button(self._frame, text="Delete Resume", command=self.deleteResume)
 
         self._lst_resumes.grid(row=0, column=0, columnspan=2, sticky="EW")
         self._btn_open_resume.grid(row=1, column=0, sticky="EW")

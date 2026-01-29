@@ -4,6 +4,8 @@ from src.gui.base.BaseWindow import BaseWindow
 from src.gui.components.NewResumeForm import NewResumeForm
 from src.gui.components.PickResumeList import PickResumeList
 from typing import Callable
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Button import Button
 
 
 class MainWindow(BaseWindow):
@@ -16,8 +18,8 @@ class MainWindow(BaseWindow):
         new_cv_resume_cb: Callable,
         delete_resume_cb: Callable
     ):
-        self._frame = tk.Frame(master, padx=10, pady=10)
-        self._btn_open_cv = ttk.Button(
+        self._frame = Frame(master, padx=10, pady=10)
+        self._btn_open_cv = Button(
             self._frame, text="View/Edit CV", command=open_editor_cb
         )
         self._frm_new_resume = NewResumeForm(

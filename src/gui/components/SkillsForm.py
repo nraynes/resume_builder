@@ -1,6 +1,7 @@
 import tkinter as tk
 from src.gui.base.BaseListForm import BaseListForm
 from typing import Callable
+from src.gui.lib.Entry import Entry
 
 
 class SkillsForm(BaseListForm):
@@ -9,7 +10,7 @@ class SkillsForm(BaseListForm):
         self.update_skills_reference_cb = update_skills_reference_cb
         super().__init__(*args, **kwargs)
         self._frame.rowconfigure(2, weight=1)
-        self._inp_skill = tk.Entry(self._frame)
+        self._inp_skill = Entry(self._frame)
 
         self._inp_skill.grid(row=4, column=2)
 

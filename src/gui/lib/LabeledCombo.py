@@ -1,14 +1,16 @@
 from src.gui.base.BaseEntry import BaseEntry
 import tkinter as tk
-from tkinter import ttk
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Label import Label
+from src.gui.lib.Combobox import Combobox
 
 
 class LabeledCombo(BaseEntry):
     def __init__(self, master: tk.BaseWidget, lbl_text: str = "", *args, **kwargs):
-        self._frame = tk.Frame(master)
+        self._frame = Frame(master)
         self._frame.columnconfigure(1, weight=1)
-        lbl = tk.Label(self._frame, text=lbl_text)
-        self._inp = ttk.Combobox(self._frame, *args, **kwargs)
+        lbl = Label(self._frame, text=lbl_text)
+        self._inp = Combobox(self._frame, *args, **kwargs)
 
         lbl.grid(row=0, sticky="E")
         self._inp.grid(row=0, column=1, sticky="EW")

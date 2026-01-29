@@ -5,12 +5,16 @@ from src.gui.lib.LabeledInput import LabeledInput
 from src.gui.lib.LabeledDateInput import LabeledDateInput
 from src.models.Certificate import Certificate
 from typing import Callable
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Label import Label
+from src.gui.lib.Checkbutton import Checkbutton
+from src.gui.lib.Button import Button
 
 
 class CertificationsEditor(BaseComponent):
 
     def __init__(self, master: tk.Toplevel, save_certification_cb: Callable):
-        self._frame = tk.Frame(master, padx=10, pady=10)
+        self._frame = Frame(master, padx=10, pady=10)
         self._frame.columnconfigure(0, weight=1)
         self._frame.columnconfigure(1, weight=1)
         self._frame.columnconfigure(2, weight=1)
@@ -18,11 +22,11 @@ class CertificationsEditor(BaseComponent):
         self._inp_issuer = LabeledInput(self._frame, "Issued By:")
         self._dat_issued = LabeledDateInput(self._frame, "Issued On:")
         self._dat_exp = LabeledDateInput(self._frame, "Expires On:")
-        lbl_does_not_expire = tk.Label(self._frame, text="Does Not Expire:")
+        lbl_does_not_expire = Label(self._frame, text="Does Not Expire:")
         self._checked = tk.IntVar(value=0)
         self._checked.trace_add("write", self.onCheck)
-        self._chk_does_not_expire = tk.Checkbutton(self._frame, variable=self._checked, onvalue=1, offvalue=0)
-        self._btn_submit = ttk.Button(self._frame, text="Save", command=save_certification_cb)
+        self._chk_does_not_expire = Checkbutton(self._frame, variable=self._checked, onvalue=1, offvalue=0)
+        self._btn_submit = Button(self._frame, text="Save", command=save_certification_cb)
 
         self._inp_certification_name.grid(row=0, column=0, columnspan=4, sticky="EW")
         self._inp_issuer.grid(row=1, column=0, columnspan=4, sticky="EW")

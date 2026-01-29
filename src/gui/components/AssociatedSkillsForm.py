@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 from src.gui.base.BaseListForm import BaseListForm
+from src.gui.lib.Combobox import Combobox
 
 
 class AssociatedSkillsForm(BaseListForm):
@@ -9,7 +10,7 @@ class AssociatedSkillsForm(BaseListForm):
         self._heading = "Associated Skills"
         super().__init__(*args, **kwargs)
         self._frame.rowconfigure(2, weight=1)
-        self._cmb_skill = ttk.Combobox(self._frame, values=skills)
+        self._cmb_skill = Combobox(self._frame, values=skills)
 
         self._cmb_skill.grid(row=4, column=2)
 

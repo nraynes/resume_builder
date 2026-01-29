@@ -2,15 +2,17 @@ import tkinter as tk
 from src.gui.lib.LabeledInput import LabeledInput
 from src.gui.base.BaseComponent import BaseComponent
 from src.models.Header import Header
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Label import Label
 
 
 class HeaderForm(BaseComponent):
     def __init__(self, master: tk.Frame):
-        self._frame = tk.Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
+        self._frame = Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
         self._frame.columnconfigure(0, weight=1)
         self._frame.columnconfigure(1, weight=1)
         self._frame.columnconfigure(2, weight=1)
-        lbl_heading = tk.Label(self._frame, text="Header", font=("Helvetica", 18, "bold"))
+        lbl_heading = Label(self._frame, text="Header", font=("Helvetica", 18, "bold"))
         self._inp_name = LabeledInput(self._frame, "Name:")
         self._inp_profession = LabeledInput(self._frame, "Profession:")
         self._inp_email = LabeledInput(self._frame, "Email:")

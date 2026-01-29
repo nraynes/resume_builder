@@ -8,12 +8,16 @@ from src.gui.components.BulletsForm import BulletsForm
 from src.gui.components.BulletEditor import BulletEditor
 from src.gui.base.BaseListItem import BaseListItem
 from typing import Callable, Optional
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Label import Label
+from src.gui.lib.Checkbutton import Checkbutton
+from src.gui.lib.Button import Button
 
 
 class ExperienceEditor(BaseComponent):
     def __init__(self, master: tk.Toplevel, save_experience_cb: Callable, skills: list[str]):
-        self._frame = tk.Frame(master, padx=10, pady=10)
-        self._left_container = tk.Frame(self._frame, padx=10, pady=10)
+        self._frame = Frame(master, padx=10, pady=10)
+        self._left_container = Frame(self._frame, padx=10, pady=10)
         self._left_container.columnconfigure(0, weight=1)
         self._left_container.columnconfigure(1, weight=1)
         self._inp_job_title = LabeledInput(self._left_container, "Job Title:")
@@ -21,16 +25,16 @@ class ExperienceEditor(BaseComponent):
         self._inp_company_location = LabeledInput(self._left_container, "Company Location:")
         self._dat_started_on = LabeledDateInput(self._left_container, "Started On:")
         self._dat_ended_on = LabeledDateInput(self._left_container, "Ended On:")
-        lbl_current_position = tk.Label(self._left_container, text="Current Position:")
+        lbl_current_position = Label(self._left_container, text="Current Position:")
         self._checked = tk.IntVar(value=0)
         self._checked.trace_add("write", self.onCheck)
-        self._chk_current_position = tk.Checkbutton(self._left_container, variable=self._checked, onvalue=1, offvalue=0)
+        self._chk_current_position = Checkbutton(self._left_container, variable=self._checked, onvalue=1, offvalue=0)
         self._frm_bullets = BulletsForm(
             self._left_container,
             edit_bullet_cb=self.showBulletEditor,
             close_bullet_cb=self.hideBulletEditor,
         )
-        self._btn_submit = ttk.Button(self._left_container, text="Save", command=save_experience_cb)
+        self._btn_submit = Button(self._left_container, text="Save", command=save_experience_cb)
         self._edt_bullet = BulletEditor(self._frame, save_bullet_cb=self.hideBulletEditor, skills=skills)
 
         self._inp_job_title.grid(row=0, column=0, columnspan=4, sticky="EW")

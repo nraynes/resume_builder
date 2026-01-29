@@ -1,11 +1,12 @@
 import tkinter as tk
 from src.gui.base.BaseMetaDataForm import BaseMetaDataForm
+from src.gui.lib.Label import Label
 
 
 class ResumeMetaDataForm(BaseMetaDataForm):
     def __init__(self, master: tk.Frame):
         super().__init__(master)
-        lbl_heading = tk.Label(
+        lbl_heading = Label(
             self._frame, text="Meta Data", font=("Helvetica", 18, "bold")
         )
         

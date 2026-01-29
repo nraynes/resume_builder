@@ -5,7 +5,7 @@ from src.models.Resume import Resume
 from src.controllers.BaseController import BaseController
 from src.gui.windows.MainWindow import MainWindow
 from src.gui.windows.EditorWindow import EditorWindow
-from typing import Optional
+from typing import Callable, Optional
 
 class GUIController(BaseController):
     def __init__(self):
@@ -36,6 +36,9 @@ class GUIController(BaseController):
     @property
     def editorWindow(self) -> EditorWindow:
         return self.windows["editor"]
+    
+    def addEvent(self, cb: Callable, *args, **kwargs):
+        self.root.after(0, lambda: cb(*args, **kwargs))
 
     def generateResumePDF(self, title: Optional[str]):
         """Calls the GeneratePDF method with different arguments based on whether

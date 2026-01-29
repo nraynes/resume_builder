@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import ttk
 from src.gui.base.BaseMetaDataForm import BaseMetaDataForm
 from typing import Callable, Optional
+from src.gui.lib.Button import Button
 
 
 class NewResumeForm(BaseMetaDataForm):
@@ -16,8 +17,8 @@ class NewResumeForm(BaseMetaDataForm):
         self.packBase()
         self.new_resume_cb = new_resume_cb
         self.new_cv_resume_cb = new_cv_resume_cb
-        self._btn_new_resume = ttk.Button(self._frame, text="New Resume", command=self.newResume)
-        self._btn_new_cv_resume = ttk.Button(
+        self._btn_new_resume = Button(self._frame, text="New Resume", command=self.newResume)
+        self._btn_new_cv_resume = Button(
             self._frame, text="New Resume from CV", command=self.newResumeFromCv
         )
 

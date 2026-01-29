@@ -3,6 +3,7 @@ from src.gui.base.BaseModal import BaseModal
 from src.gui.components.CertificationsEditor import CertificationsEditor
 from src.models.Certificate import Certificate
 from typing import Callable
+from src.gui.lib.Toplevel import Toplevel
 
 
 class CertificationsModal(BaseModal):
@@ -12,7 +13,7 @@ class CertificationsModal(BaseModal):
         certificate: Certificate,
         save_certification_cb: Callable
     ):
-        self._frame = tk.Toplevel(master)
+        self._frame = Toplevel(master)
         self._frame.title("Certification Editor")
         self.save_certification_cb = save_certification_cb
         self._edt_certifications = CertificationsEditor(self._frame, save_certification_cb=self.save)

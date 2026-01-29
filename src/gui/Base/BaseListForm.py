@@ -5,6 +5,9 @@ from src.gui.base.BaseListItem import BaseListItem
 from src.gui.lib.Listbox import Listbox
 from abc import ABC, abstractmethod
 from typing import Any, Optional
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Label import Label
+from src.gui.lib.Button import Button
 
 
 class BaseListForm(BaseComponent, ABC):
@@ -12,7 +15,7 @@ class BaseListForm(BaseComponent, ABC):
     _items: list[BaseListItem]
 
     def __init__(self, master: tk.Frame, *args, **kwargs):
-        self._frame = tk.Frame(
+        self._frame = Frame(
             master, padx=5, pady=5, borderwidth=1, relief="solid", *args, **kwargs
         )
         self._frame.columnconfigure(0, weight=1)
@@ -20,13 +23,13 @@ class BaseListForm(BaseComponent, ABC):
         self._frame.columnconfigure(2, weight=1)
         self._frame.columnconfigure(3, weight=0)
         self._frame.columnconfigure(4, weight=1)
-        lbl_heading = tk.Label(
+        lbl_heading = Label(
             self._frame, text=self._heading, font=("Helvetica", 18, "bold")
         )
         self._items = []
         self._lst_items = Listbox(self._frame)
-        self._btn_delete = ttk.Button(self._frame, text="Delete", command=self.cmdDelete)
-        self._btn_add = ttk.Button(self._frame, text="Add", command=self.cmdAdd)
+        self._btn_delete = Button(self._frame, text="Delete", command=self.cmdDelete)
+        self._btn_add = Button(self._frame, text="Add", command=self.cmdAdd)
 
         lbl_heading.grid(row=0, column=0, sticky="W")
         self.spacing().grid(row=1, column=0)

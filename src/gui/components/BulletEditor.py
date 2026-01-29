@@ -5,12 +5,16 @@ from src.gui.base.BaseListItem import BaseListItem
 from src.gui.components.AssociatedSkillsForm import AssociatedSkillsForm
 from src.models.Bullet import Bullet
 from typing import Callable
+from src.gui.lib.Frame import Frame
+from src.gui.lib.Label import Label
+from src.gui.lib.Text import Text
+from src.gui.lib.Button import Button
 
 
 class BulletEditor(BaseComponent):
 
     def __init__(self, master: tk.Frame, save_bullet_cb: Callable, skills: list[str]):
-        self._frame = tk.Frame(master, padx=10, pady=10, borderwidth=1, relief="solid")
+        self._frame = Frame(master, padx=10, pady=10, borderwidth=1, relief="solid")
         self._frame.columnconfigure(0, weight=1)
         self._frame.columnconfigure(1, weight=1)
         self._frame.columnconfigure(2, weight=0)
@@ -18,9 +22,9 @@ class BulletEditor(BaseComponent):
         self.save_bullet_cb = save_bullet_cb
         self._original_bullet = None
         self._frm_associated_skills = AssociatedSkillsForm(self._frame, skills=skills, width=5)
-        lbl_bullet = tk.Label(self._frame, text="Bullet Text", font=("Helvetica", 16, "bold"))
-        self._txt_bullet = tk.Text(self._frame, borderwidth=1, relief="solid")
-        self._btn_submit = ttk.Button(self._frame, text="Save", command=self.save)
+        lbl_bullet = Label(self._frame, text="Bullet Text", font=("Helvetica", 16, "bold"))
+        self._txt_bullet = Text(self._frame, borderwidth=1, relief="solid")
+        self._btn_submit = Button(self._frame, text="Save", command=self.save)
 
         self._frm_associated_skills.pack(fill=tk.BOTH)
         self.spacing().pack()

@@ -2,20 +2,22 @@ from src.gui.base.BaseEditorListForm import BaseEditorListForm
 from src.gui.modals.ExperienceModal import ExperienceModal
 from src.models.Experience import Experience
 from src.gui.base.BaseListItem import BaseListItem
+from typing import Callable
 
 
 class ExperienceForm(BaseEditorListForm):
-    def __init__(self, *args, **kwargs):
+    def __init__(self, *args, update_covered_skills_cb: Callable, **kwargs):
+        self.update_covered_skills_cb = update_covered_skills_cb
         self._heading = "Work Experience"
         self._sub_window = None
         self._active_list_item = None
         self._skills = []
         super().__init__(*args, **kwargs)
-        
+
     @property
     def skills(self) -> list[str]:
         return self._skills
-    
+
     @skills.setter
     def skills(self, skills: list[str]):
         self._skills = skills
@@ -49,6 +51,7 @@ class ExperienceForm(BaseEditorListForm):
             self._sub_window.close()
             self._sub_window = None
             self._active_list_item = None
+            self.update_covered_skills_cb()
 
     def openModal(self, list_item: BaseListItem):
         self._active_list_item = list_item
