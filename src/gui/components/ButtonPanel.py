@@ -20,7 +20,7 @@ class ButtonPanel(BaseComponent):
         self._sub_window = None
         self._frame = Frame(master, padx=5, pady=5, borderwidth=2, relief="sunken")
         self._btn_back = Button(self._frame, text="Back", command=open_main_cb)
-        self._btn_save = Button(self._frame, text="Save Resume", command=self.saveResume)
+        self._btn_save = Button(self._frame, text="Save", command=self.saveResume)
         self._btn_generate = Button(
             self._frame, text="Generate PDF", command=generate_pdf_cb
         )

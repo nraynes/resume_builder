@@ -25,6 +25,9 @@ all of their work history, education, certifications, skills, etc. The user can 
 **Language(s):**
 - Python
 
+**GUI:**
+- TKinter
+
 ---
 
 ## Getting Started
