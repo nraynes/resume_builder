@@ -22,6 +22,7 @@ class ExperienceModal(BaseModal):
 
         self._edt_experience.pack()
         self.populateData(experience)
+        self.setLocationTopLeft()
 
     @property
     def edtExperience(self) -> ExperienceEditor:

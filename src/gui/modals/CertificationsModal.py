@@ -20,7 +20,8 @@ class CertificationsModal(BaseModal):
 
         self._edt_certifications.pack()
         self.populateData(certificate)
-        
+        self.setLocationTopLeft()
+
     @property
     def edtCertifications(self) -> CertificationsEditor:
         return self._edt_certifications

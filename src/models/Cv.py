@@ -1,5 +1,5 @@
 from src.models.Header import Header
-from src.models.BaseModel import BaseModel
+from src.gui.base.BaseModel import BaseModel
 from src.models.Experience import Experience
 from src.models.Education import Education
 from src.models.Certificate import Certificate

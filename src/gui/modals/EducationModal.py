@@ -21,6 +21,7 @@ class EducationModal(BaseModal):
 
         self._edt_education.pack()
         self.populateData(education)
+        self.setLocationTopLeft()
 
     @property
     def edtEducation(self) -> EducationEditor:

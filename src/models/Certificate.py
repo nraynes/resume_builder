@@ -1,5 +1,5 @@
 from src.utils.DateUtils import DateUtils
-from src.models.BaseModel import BaseModel
+from src.gui.base.BaseModel import BaseModel
 from datetime import datetime
 
 

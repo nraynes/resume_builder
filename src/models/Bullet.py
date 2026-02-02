@@ -1,4 +1,4 @@
-from src.models.BaseModel import BaseModel
+from src.gui.base.BaseModel import BaseModel
 
 class Bullet(BaseModel):
     def __init__(self, data: dict = {}):
