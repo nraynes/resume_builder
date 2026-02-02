@@ -84,7 +84,7 @@ class PDFService:
             indent (int, optional): The indent for this bullet point. Defaults to 4.
         """
         self.pdf.set_x(self.pdf.l_margin + indent)
-        self.pdf.multi_cell(0, 5, f"- {text}")
+        self.pdf.multi_cell(0, 5, f"- {text}", align="L")
 
     def generateHeader(self, header: Header):
         """Generates and formats the header section.
@@ -129,6 +129,7 @@ class PDFService:
                 0,
                 5,
                 summary,
+                align="L"
             )
 
     def generateSkills(self, skills: list[str]):
@@ -142,7 +143,7 @@ class PDFService:
             skill_str = ""
             for x in skills:
                 skill_str += f"{x}, "
-            self.pdf.multi_cell(0, 5, skill_str[0:-2])
+            self.pdf.multi_cell(0, 5, skill_str[0:-2], align="L")
 
     def generateExperience(self, experience: list[Experience]):
         """Generates and formats the work experience section
@@ -194,7 +195,7 @@ class PDFService:
                     0,
                     5,
                     f"{edu.schoolName}  |  {str_grad_phrase}: {datetime.strftime(edu.graduationDate, self.date_format)}",
-                    ln=1,
+                    ln=1
                 )
 
     def generateCertifications(self, certifications: list[Certificate]):
@@ -209,13 +210,12 @@ class PDFService:
                 if cert.doesNotExpire:
                     str_expiration = ""
                 else:
-                    str_expiration = (
-                        f" | Expires: {datetime.strftime(cert.expDate, self.date_format)}"
-                    )
-                self.pdf.multi_cell(
+                    str_expiration = f"  |  Expires: {datetime.strftime(cert.expDate, self.date_format)}"
+                self.pdf.cell(
                     0,
                     5,
                     f"{cert.issuer} {cert.certificateName}  |  Issued: {datetime.strftime(cert.issueDate, self.date_format)}{str_expiration}",
+                    ln=1
                 )
 
     def generateAwards(self, awards: list[Award]):
@@ -227,8 +227,9 @@ class PDFService:
         if len(awards) > 0:
             self.section_title("Awards")
             for award in awards:
-                self.pdf.multi_cell(
+                self.pdf.cell(
                     0,
                     5,
                     f"{award.awardName}  |  {award.issuer}  |  Issued: {datetime.strftime(award.issueDate, self.date_format)}",
+                    ln=1
                 )
