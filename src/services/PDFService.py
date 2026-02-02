@@ -73,7 +73,7 @@ class PDFService:
         """
         self.pdf.set_font("Helvetica", "B", 11)
         self.pdf.ln(2)
-        self.pdf.cell(0, 6, title.upper(), ln=1)
+        self.pdf.cell(0, 6, title.upper(), ln=1, align="L")
         self.pdf.set_font("Helvetica", "", 10)
 
     def bullet(self, text: str, indent=4):
@@ -93,10 +93,10 @@ class PDFService:
             header (Header): Resume header object.
         """
         self.pdf.set_font("Helvetica", "B", 16)
-        self.pdf.cell(0, 8, header.name, ln=1)
+        self.pdf.cell(0, 8, header.name, ln=1, align="L")
 
         self.pdf.set_font("Helvetica", "I", 10)
-        self.pdf.cell(0, 5, header.profession, ln=1)
+        self.pdf.cell(0, 5, header.profession, ln=1, align="L")
 
         self.pdf.set_font("Helvetica", "", 10)
         info_cell_1 = ""
@@ -113,9 +113,9 @@ class PDFService:
         for x in [header.website, header.altWebsite]:
             if x:
                 info_cell_2 += f"{x}  |  "
-        self.pdf.cell(0, 5, info_cell_1[0:-5], ln=1)
+        self.pdf.cell(0, 5, info_cell_1[0:-5], ln=1, align="L")
         if info_cell_2:
-            self.pdf.cell(0, 5, info_cell_2[0:-5], ln=1)
+            self.pdf.cell(0, 5, info_cell_2[0:-5], ln=1, align="L")
 
     def generateSummary(self, summary: str):
         """Generates and formats the resume summary.
@@ -156,7 +156,7 @@ class PDFService:
 
             for job in experience:
                 self.pdf.set_font("Helvetica", "B", 10)
-                self.pdf.cell(0, 5, job.jobTitle, ln=1)
+                self.pdf.cell(0, 5, job.jobTitle, ln=1, align="L")
                 self.pdf.set_font("Helvetica", "", 10)
                 strJobStarted = datetime.strftime(job.startedOn, self.date_format)
                 if job.currentPosition:
@@ -168,6 +168,7 @@ class PDFService:
                     5,
                     f"{job.company}  |  {job.companyLocation}  |  {timeframe}",
                     ln=1,
+                    align="L"
                 )
                 self.pdf.ln(1)
                 for bullet in job.bullets:
@@ -185,7 +186,9 @@ class PDFService:
             for edu in education:
                 self.pdf.set_font("Helvetica", "B", 10)
                 formatted_degree = f"{edu.degreeType.name[0].upper()}{edu.degreeType.name[1:].lower()}"
-                self.pdf.cell(0, 5, f"{formatted_degree} - {edu.major}", ln=1)
+                self.pdf.cell(
+                    0, 5, f"{formatted_degree} - {edu.major}", ln=1, align="L"
+                )
                 self.pdf.set_font("Helvetica", "", 10)
                 if edu.stillAttending:
                     str_grad_phrase = "Expected Graduation"
@@ -195,7 +198,8 @@ class PDFService:
                     0,
                     5,
                     f"{edu.schoolName}  |  {str_grad_phrase}: {datetime.strftime(edu.graduationDate, self.date_format)}",
-                    ln=1
+                    ln=1,
+                    align="L",
                 )
 
     def generateCertifications(self, certifications: list[Certificate]):
@@ -215,7 +219,8 @@ class PDFService:
                     0,
                     5,
                     f"{cert.issuer} {cert.certificateName}  |  Issued: {datetime.strftime(cert.issueDate, self.date_format)}{str_expiration}",
-                    ln=1
+                    ln=1,
+                    align="L",
                 )
 
     def generateAwards(self, awards: list[Award]):
@@ -231,5 +236,6 @@ class PDFService:
                     0,
                     5,
                     f"{award.awardName}  |  {award.issuer}  |  Issued: {datetime.strftime(award.issueDate, self.date_format)}",
-                    ln=1
+                    ln=1,
+                    align="L"
                 )
