@@ -1,7 +1,9 @@
 from tkinter import ttk
 
-
 class Button(ttk.Button):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+    
     def grid(self, *args, **kwargs):
         self.master.after(0, lambda: ttk.Button.grid(self, *args, **kwargs))
 

@@ -12,7 +12,7 @@ class AssociatedSkillsForm(BaseListForm):
         self._frame.rowconfigure(2, weight=1)
         self._cmb_skill = Combobox(self._frame, values=skills)
 
-        self._cmb_skill.grid(row=4, column=2)
+        self._cmb_skill.grid(row=4, column=2, columnspan=3, sticky="EW")
 
     @property
     def cmbSkill(self) -> ttk.Combobox:

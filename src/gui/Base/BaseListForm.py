@@ -23,6 +23,8 @@ class BaseListForm(BaseComponent, ABC):
         self._frame.columnconfigure(2, weight=1)
         self._frame.columnconfigure(3, weight=0)
         self._frame.columnconfigure(4, weight=1)
+        self._frame.columnconfigure(5, weight=0)
+        self._frame.columnconfigure(6, weight=1)
         lbl_heading = Label(
             self._frame, text=self._heading, font=("Helvetica", 18, "bold")
         )
@@ -33,12 +35,12 @@ class BaseListForm(BaseComponent, ABC):
 
         lbl_heading.grid(row=0, column=0, sticky="W")
         self.spacing().grid(row=1, column=0)
-        self._lst_items.grid(row=2, column=0, columnspan=5, sticky="NSEW")
+        self._lst_items.grid(row=2, column=0, columnspan=7, sticky="NSEW")
         self.spacing().grid(row=3, column=0)
         self._btn_delete.grid(row=4, column=0, sticky="EW")
         self.spacing().grid(row=4, column=1)
-        self.spacing().grid(row=4, column=3)
-        self._btn_add.grid(row=4, column=4, sticky="EW")
+        self.spacing().grid(row=4, column=5)
+        self._btn_add.grid(row=4, column=6, sticky="EW")
 
     @property
     def lstItems(self) -> Listbox:

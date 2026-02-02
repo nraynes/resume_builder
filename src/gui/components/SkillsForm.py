@@ -12,7 +12,7 @@ class SkillsForm(BaseListForm):
         self._frame.rowconfigure(2, weight=1)
         self._inp_skill = Entry(self._frame)
 
-        self._inp_skill.grid(row=4, column=2)
+        self._inp_skill.grid(row=4, column=2, columnspan=3, sticky="EW")
 
     @property
     def inpSkill(self) -> tk.Entry:

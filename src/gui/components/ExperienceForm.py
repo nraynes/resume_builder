@@ -3,6 +3,7 @@ from src.gui.modals.ExperienceModal import ExperienceModal
 from src.models.Experience import Experience
 from src.gui.base.BaseListItem import BaseListItem
 from typing import Callable
+from copy import deepcopy
 
 
 class ExperienceForm(BaseEditorListForm):
@@ -34,6 +35,11 @@ class ExperienceForm(BaseEditorListForm):
         selected_experience = self.selectedItem()
         if selected_experience:
             self.openModal(selected_experience)
+
+    def cmdCopy(self):
+        selected_experience = self.selectedItem()
+        if selected_experience:
+            self.addItem(deepcopy(selected_experience.item), selected_experience.text)
 
     def getTextName(self, work: Experience) -> str:
         return f"{work.company} - {work.jobTitle}"

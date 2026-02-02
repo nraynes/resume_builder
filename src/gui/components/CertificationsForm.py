@@ -2,6 +2,7 @@ from src.gui.base.BaseEditorListForm import BaseEditorListForm
 from src.gui.modals.CertificationsModal import CertificationsModal
 from src.models.Certificate import Certificate
 from src.gui.base.BaseListItem import BaseListItem
+from copy import deepcopy
 
 
 class CertificationsForm(BaseEditorListForm):
@@ -23,6 +24,11 @@ class CertificationsForm(BaseEditorListForm):
         selected_certificate = self.selectedItem()
         if selected_certificate:
             self.openModal(selected_certificate)
+
+    def cmdCopy(self):
+        selected_certificate = self.selectedItem()
+        if selected_certificate:
+            self.addItem(deepcopy(selected_certificate.item), selected_certificate.text)
 
     def getTextName(self, cert: Certificate) -> str:
         return f"{cert.issuer} - {cert.certificateName}"

@@ -1,4 +1,5 @@
 import tkinter as tk
+from tkinter import ttk
 from tkinter import filedialog
 from src.models.Cv import Cv
 from src.models.Resume import Resume
@@ -11,6 +12,8 @@ class GUIController(BaseController):
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("Resume Builder")
+        self._style = ttk.Style()
+        self.configureStyle()
         self._active_resume = None
         self.windows = {
             "main": MainWindow(
@@ -36,7 +39,10 @@ class GUIController(BaseController):
     @property
     def editorWindow(self) -> EditorWindow:
         return self.windows["editor"]
-    
+
+    def configureStyle(self):
+        self._style.configure("TButton", width=0)
+
     def addEvent(self, cb: Callable, *args, **kwargs):
         self.root.after(0, lambda: cb(*args, **kwargs))
 

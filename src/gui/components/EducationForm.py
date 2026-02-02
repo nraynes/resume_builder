@@ -2,6 +2,7 @@ from src.gui.base.BaseEditorListForm import BaseEditorListForm
 from src.gui.modals.EducationModal import EducationModal
 from src.models.Education import Education
 from src.gui.base.BaseListItem import BaseListItem
+from copy import deepcopy
 
 
 class EducationForm(BaseEditorListForm):
@@ -23,6 +24,11 @@ class EducationForm(BaseEditorListForm):
         selected_education = self.selectedItem()
         if selected_education:
             self.openModal(selected_education)
+
+    def cmdCopy(self):
+        selected_education = self.selectedItem()
+        if selected_education:
+            self.addItem(deepcopy(selected_education.item), selected_education.text)
 
     def getTextName(self, edu: Education) -> str:
         return f"{edu.degreeType.name} - {edu.major}"

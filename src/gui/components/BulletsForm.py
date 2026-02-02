@@ -1,6 +1,7 @@
 from src.gui.base.BaseEditorListForm import BaseEditorListForm
 from src.models.Bullet import Bullet
 from typing import Callable
+from copy import deepcopy
 
 
 class BulletsForm(BaseEditorListForm):
@@ -21,8 +22,14 @@ class BulletsForm(BaseEditorListForm):
             self.delete(self.selectedItem().id)
 
     def cmdEdit(self):
-        if self.selectedItem() is not None:
-            self.edit_bullet_cb(self.selectedItem())
+        selected_bullet = self.selectedItem()
+        if selected_bullet:
+            self.edit_bullet_cb(selected_bullet)
+
+    def cmdCopy(self):
+        selected_bullet = self.selectedItem()
+        if selected_bullet:
+            self.addItem(deepcopy(selected_bullet.item), selected_bullet.text)
 
     def populateData(self, bullets: list[Bullet]):
         for bullet in bullets:

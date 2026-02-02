@@ -8,12 +8,13 @@ from src.gui.lib.Text import Text
 class SummaryForm(BaseComponent):
     def __init__(self, master: tk.Frame):
         self._frame = Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
+        self._frame.columnconfigure(0, weight=1)
         lbl_summary = Label(self._frame, text="Summary", font=("Helvetica", 18, "bold"))
         self._txt_summary = Text(self._frame, borderwidth=1, relief="solid")
 
         lbl_summary.grid(row=0, sticky="EW")
         self.spacing().grid(row=1)
-        self._txt_summary.grid(row=2)
+        self._txt_summary.grid(row=2, sticky="EW")
 
     @property
     def txtSummary(self) -> tk.Text:
