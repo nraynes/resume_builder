@@ -10,6 +10,7 @@ from src.gui.components.SkillsForm import SkillsForm
 from src.gui.components.EducationForm import EducationForm
 from src.gui.components.ExperienceForm import ExperienceForm
 from src.gui.components.CertificationsForm import CertificationsForm
+from src.gui.components.AwardsForm import AwardsForm
 from typing import Callable
 from src.gui.lib.Frame import Frame
 from src.gui.lib.Label import Label
@@ -58,12 +59,16 @@ class ResumeEditor(BaseComponent):
 
         # Build third layer.
         self._layer_three = Frame(self._frame)
-        self._layer_three.columnconfigure(0, weight=1)
+        self._layer_three.columnconfigure(2, weight=1)
+        self._layer_three.columnconfigure(4, weight=1)
         self._frm_summary = SummaryForm(self._layer_three)
+        self._frm_awards = AwardsForm(self._layer_three)
         self._frm_skills = SkillsForm(self._layer_three, update_skills_reference_cb=self.updateSkillsReferenceInExperience)
         self._frm_summary.grid(row=0, column=0, sticky="EW")
         self.spacing(self._layer_three).grid(row=0, column=1)
-        self._frm_skills.grid(row=0, column=2, sticky="NSEW")
+        self._frm_awards.grid(row=0, column=2, sticky="NSEW")
+        self.spacing(self._layer_three).grid(row=0, column=3)
+        self._frm_skills.grid(row=0, column=4, sticky="NSEW")
         self._layer_three.grid(row=7, sticky="EW")
         self.spacing().grid(row=8)
 
@@ -122,6 +127,10 @@ class ResumeEditor(BaseComponent):
         return self._frm_summary
 
     @property
+    def frmAwards(self) -> AwardsForm:
+        return self._frm_awards
+
+    @property
     def frmSkills(self) -> SkillsForm:
         return self._frm_skills
 
@@ -145,7 +154,7 @@ class ResumeEditor(BaseComponent):
         self._lbl_covered_skills.grid(row=0, sticky="W")
         self._lbl_missing_skills.grid(row=1, sticky="W")
         self._top_spacing.grid(row=2)
-        
+
     def hideCoveredSkills(self):
         self._lbl_covered_skills.grid_forget()
         self._lbl_missing_skills.grid_forget()
@@ -184,6 +193,7 @@ class ResumeEditor(BaseComponent):
         self._frm_experience.populateData(resume.workExperience)
         self._frm_education.populateData(resume.education)
         self._frm_certifications.populateData(resume.certificates)
+        self._frm_awards.populateData(resume.awards)
         self.updateCoveredSkills()
         if self._is_cv:
             self.hideCoveredSkills()
@@ -198,6 +208,7 @@ class ResumeEditor(BaseComponent):
             "work_experience": [work.to_dict() for work in self._frm_experience.items()],
             "education": [edu.to_dict() for edu in self._frm_education.items()],
             "certificates": [cert.to_dict() for cert in self._frm_certifications.items()],
+            "awards": [award.to_dict() for award in self._frm_awards.items()],
             "skills": self._frm_skills.items(),
         }
         if self._is_cv:

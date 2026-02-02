@@ -3,6 +3,7 @@ from src.gui.base.BaseModel import BaseModel
 from src.models.Experience import Experience
 from src.models.Education import Education
 from src.models.Certificate import Certificate
+from src.models.Award import Award
 
 
 class Cv(BaseModel):
@@ -11,8 +12,9 @@ class Cv(BaseModel):
         self._summary = self.extract(data, "summary", "")
         self._education = [Education(edu) for edu in self.extract(data, "education", [])]
         self._skills = self.extract(data, "skills", [])
-        self._certificates = [Certificate(edu) for edu in self.extract(data, "certificates", [])]
-        self._work_experience = [Experience(edu) for edu in self.extract(data, "work_experience", [])]
+        self._certificates = [Certificate(cert) for cert in self.extract(data, "certificates", [])]
+        self._awards = [Award(award) for award in self.extract(data, "awards", [])]
+        self._work_experience = [Experience(work) for work in self.extract(data, "work_experience", [])]
 
     @property
     def header(self) -> Header:
@@ -35,6 +37,10 @@ class Cv(BaseModel):
         return self._certificates
 
     @property
+    def awards(self) -> list[Award]:
+        return self._awards
+
+    @property
     def workExperience(self) -> list[Experience]:
         return self._work_experience
 
@@ -45,5 +51,6 @@ class Cv(BaseModel):
             "work_experience": [work.to_dict() for work in self._work_experience],
             "education": [edu.to_dict() for edu in self._education],
             "certificates": [cert.to_dict() for cert in self._certificates],
+            "awards": [award.to_dict() for award in self._awards],
             "skills": self._skills,
         }

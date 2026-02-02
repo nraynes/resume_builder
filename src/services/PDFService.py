@@ -4,6 +4,7 @@ from src.models.Header import Header
 from src.models.Experience import Experience
 from src.models.Education import Education
 from src.models.Certificate import Certificate
+from src.models.Award import Award
 from datetime import datetime
 
 class ResumePDF(FPDF):
@@ -45,6 +46,7 @@ class PDFService:
         self.generateExperience(resume.workExperience)
         self.generateEducation(resume.education)
         self.generateCertifications(resume.certificates)
+        self.generateAwards(resume.awards)
         self.pdf.output(output)
         self.pdf = None
 
@@ -214,4 +216,19 @@ class PDFService:
                     0,
                     5,
                     f"{cert.issuer} {cert.certificateName}  |  Issued: {datetime.strftime(cert.issueDate, self.date_format)}{str_expiration}",
+                )
+
+    def generateAwards(self, awards: list[Award]):
+        """Generates and formats the awards section.
+
+        Args:
+            awards (list[Award]): List of award objects.
+        """
+        if len(awards) > 0:
+            self.section_title("Awards")
+            for award in awards:
+                self.pdf.multi_cell(
+                    0,
+                    5,
+                    f"{award.awardName}  |  {award.issuer}  |  Issued: {datetime.strftime(award.issueDate, self.date_format)}",
                 )

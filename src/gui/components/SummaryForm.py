@@ -10,7 +10,7 @@ class SummaryForm(BaseComponent):
         self._frame = Frame(master, padx=5, pady=5, borderwidth=1, relief="solid")
         self._frame.columnconfigure(0, weight=1)
         lbl_summary = Label(self._frame, text="Summary", font=("Helvetica", 18, "bold"))
-        self._txt_summary = Text(self._frame, borderwidth=1, relief="solid")
+        self._txt_summary = Text(self._frame, borderwidth=1, relief="solid", width=40)
 
         lbl_summary.grid(row=0, sticky="EW")
         self.spacing().grid(row=1)
