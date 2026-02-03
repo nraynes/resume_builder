@@ -29,7 +29,7 @@ class BaseListForm(BaseComponent, ABC):
             self._frame, text=self._heading, font=("Helvetica", 18, "bold")
         )
         self._items = []
-        self._lst_items = Listbox(self._frame)
+        self._lst_items = Listbox(self._frame, shift_item_cb=self.shiftItems)
         self._btn_delete = Button(self._frame, text="Delete", command=self.cmdDelete)
         self._btn_add = Button(self._frame, text="Add", command=self.cmdAdd)
 
@@ -70,6 +70,14 @@ class BaseListForm(BaseComponent, ABC):
         self._items = []
         self.updateList()
 
+    def shiftItems(self, i1, i2):
+        x = self.itemPosition(i1)
+        y = self.itemPosition(i2)
+        print(f"x: {x}; y: {y}\n")
+        if x is not None and y is not None:
+            self._items[x], self._items[y] = self._items[y], self._items[x]
+            self.updateList()
+
     def item(self, index: int) -> Optional[BaseListItem]:
         """Gets the BaseListItem with the supplied index.
         Note: The index refers to BaseListItem.id, which is the index of where it is located
@@ -84,6 +92,22 @@ class BaseListForm(BaseComponent, ABC):
         for item in self._items:
             if item.id == index:
                 return item
+        return None
+
+    def itemPosition(self, index: int) -> Optional[BaseListItem]:
+        """Gets the position of a BaseListItem with the supplied index within the item list.
+        Note: The index refers to BaseListItem.id, which is the index of where it is located
+        in the Listbox widget, not the it's index in the stored list of items.
+
+        Args:
+            index (int): The index of the BaseListItem.
+
+        Returns:
+            Optional[int]: The position of the BaseListItem with the supplied index within the item list.
+        """
+        for i, item in enumerate(self._items):
+            if item.id == index:
+                return i
         return None
 
     def items(self) -> list[Any]:

@@ -1,8 +1,33 @@
 import tkinter as tk
-from typing import Optional
+from typing import Callable, Optional
 
 
 class Listbox(tk.Listbox):
+
+    def __init__(self, *args, shift_item_cb: Callable = lambda x, i: None, **kwargs):
+        kwargs["selectmode"] = tk.SINGLE
+        tk.Listbox.__init__(self, *args, **kwargs)
+        self.bind("<Button-1>", self.setIndexOne)
+        self.bind("<B1-Motion>", self.setIndexTwo)
+        self.bind("<ButtonRelease-1>", self.shiftSelection)
+        self.index_one = None
+        self.index_two = None
+        self.shift_item_cb = shift_item_cb
+
+    def setIndexOne(self, event):
+        self.index_one = self.nearest(event.y)
+
+    def setIndexTwo(self, event):
+        self.index_two = self.nearest(event.y)
+
+    def shiftSelection(self, event):
+        if (
+            self.index_one is not None
+            and self.index_two is not None
+            and self.index_one != self.index_two
+        ):
+            self.shift_item_cb(self.index_one, self.index_two)
+
     def grid(self, *args, **kwargs):
         self.master.after(0, lambda: tk.Listbox.grid(self, *args, **kwargs))
 
