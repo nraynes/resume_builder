@@ -27,6 +27,8 @@ class Listbox(tk.Listbox):
             and self.index_one != self.index_two
         ):
             self.shift_item_cb(self.index_one, self.index_two)
+            self.index_one = None
+            self.index_two = None
 
     def grid(self, *args, **kwargs):
         self.master.after(0, lambda: tk.Listbox.grid(self, *args, **kwargs))
