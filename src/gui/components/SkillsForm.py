@@ -22,6 +22,7 @@ class SkillsForm(BaseListForm):
         skill = self._inp_skill.get()
         self.addItem(skill, skill)
         self.update_skills_reference_cb()
+        self._inp_skill.delete(0, tk.END)
 
     def cmdDelete(self):
         if self.selectedItem() is not None:
