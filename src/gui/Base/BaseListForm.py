@@ -73,7 +73,6 @@ class BaseListForm(BaseComponent, ABC):
     def shiftItems(self, i1, i2):
         x = self.itemPosition(i1)
         y = self.itemPosition(i2)
-        print(f"x: {x}; y: {y}\n")
         if x is not None and y is not None:
             self._items[x], self._items[y] = self._items[y], self._items[x]
             self.updateList()
