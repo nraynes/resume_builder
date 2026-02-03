@@ -109,15 +109,15 @@ class GUIController(BaseController):
     def openMainWindow(self):
         self.editorWindow.hide()
         self.root.after(0, lambda: self.mainWindow.show())
-        self.root.geometry("")
         self.populateMainWindowData()
+        self.root.after(0, lambda: self.root.geometry(""))
 
     def openEditorWindow(self, title: Optional[str] = None):
         self.setActiveResume(title)
         self.mainWindow.hide()
         self.root.after(0, lambda: self.editorWindow.show())
-        self.root.geometry("")
         self.populateEditorWindowData()
+        self.root.after(0, lambda: self.root.geometry(""))
 
     def startGUI(self):
         self.root.mainloop()
