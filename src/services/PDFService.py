@@ -6,6 +6,7 @@ from src.models.Education import Education
 from src.models.Certificate import Certificate
 from src.models.Award import Award
 from datetime import datetime
+from math import floor
 
 class ResumePDF(FPDF):
     """Base class to ensure headers and footers are no included in the pdf.
@@ -50,6 +51,46 @@ class PDFService:
         self.pdf.output(output)
         self.pdf = None
 
+    def getRemainingSpace(self) -> float:
+        """Get the remaining available space in the document.
+
+        Returns:
+            float: The remaining available space left in the document.
+        """
+        return self.pdf.eph + self.pdf.t_margin - self.pdf.get_y()
+
+    def determinePageBreak(self, height: float):
+        """Determine if a page break is necessary based on the provided height requested by a section.
+
+        Args:
+            height (float): The height of the section that wants to be placed.
+        """
+        remaining_space = self.getRemainingSpace()
+        if height > remaining_space:
+            self.pdf.add_page()
+
+    def calculateMultiCellHeight(self, text: str, cell_height: int, indent: int = 0) -> float:
+        """Calculate the height of a multicell with the supplied arguments.
+        Height is calculated from word based text wrapping.
+
+        Args:
+            text (str): The text for the multicell.
+            cell_height (int): The height of each cell line in the multicell.
+            indent (int, optional): The size of the indent, if any. Defaults to 0.
+
+        Returns:
+            float: The total height of the multicell.
+        """
+        line_count = 1
+        current_line_width = indent
+        for word in text.split(" "):
+            word_width = self.pdf.get_string_width(f"{word} ")
+            if current_line_width + word_width > self.pdf.epw:
+                line_count += 1
+                current_line_width = 0
+            current_line_width += word_width
+        return float(line_count * cell_height)
+
     def hr(self, gap_before=2, gap_after=4):
         """Adds a horizontal rule on the current pdf being generated.
 
@@ -65,7 +106,7 @@ class PDFService:
         self.pdf.line(x1, y, x2, y)
         self.pdf.ln(gap_after)
 
-    def section_title(self, title: str):
+    def sectionTitle(self, title: str):
         """Adds a section title to the current pdf being generated.
 
         Args:
@@ -76,7 +117,7 @@ class PDFService:
         self.pdf.cell(0, 6, title.upper(), ln=1, align="L")
         self.pdf.set_font("Helvetica", "", 10)
 
-    def bullet(self, text: str, indent=4):
+    def bullet(self, text: str, indent: int = 4):
         """Adds a bullet point to the current pdf being generated.
 
         Args:
@@ -92,13 +133,6 @@ class PDFService:
         Args:
             header (Header): Resume header object.
         """
-        self.pdf.set_font("Helvetica", "B", 16)
-        self.pdf.cell(0, 8, header.name, ln=1, align="L")
-
-        self.pdf.set_font("Helvetica", "I", 10)
-        self.pdf.cell(0, 5, header.profession, ln=1, align="L")
-
-        self.pdf.set_font("Helvetica", "", 10)
         info_cell_1 = ""
         info_cell_2 = ""
         location_part = ""
@@ -113,6 +147,14 @@ class PDFService:
         for x in [header.website, header.altWebsite]:
             if x:
                 info_cell_2 += f"{x}  |  "
+
+        self.pdf.set_font("Helvetica", "B", 16)
+        self.pdf.cell(0, 8, header.name, ln=1, align="L")
+
+        self.pdf.set_font("Helvetica", "I", 10)
+        self.pdf.cell(0, 5, header.profession, ln=1, align="L")
+
+        self.pdf.set_font("Helvetica", "", 10)
         self.pdf.cell(0, 5, info_cell_1[0:-5], ln=1, align="L")
         if info_cell_2:
             self.pdf.cell(0, 5, info_cell_2[0:-5], ln=1, align="L")
@@ -124,7 +166,7 @@ class PDFService:
             summary (str): The summary from the resume.
         """
         if summary:
-            self.section_title("Summary")
+            self.sectionTitle("Summary")
             self.pdf.multi_cell(
                 0,
                 5,
@@ -139,39 +181,50 @@ class PDFService:
             skills (list[str]): List of skills.
         """
         if len(skills) > 0:
-            self.section_title("Skills")
+            self.sectionTitle("Skills")
             skill_str = ""
             for x in skills:
                 skill_str += f"{x}, "
             self.pdf.multi_cell(0, 5, skill_str[0:-2], align="L")
 
     def generateExperience(self, experience: list[Experience]):
-        """Generates and formats the work experience section
+        """Generates and formats the work experience section.
 
         Args:
             experience (list[Experience]): List of work experience objects.
         """
-        if len(experience) > 0:
-            self.section_title("Experience")
+        def calculateSingleWorkSectionHeight(w: Experience) -> float:
+            h = 13.0
+            for b in w.bullets:
+                h += self.calculateMultiCellHeight(b.text, 5, 4)
+            return h
 
-            for job in experience:
+        if len(experience) > 0:
+            self.determinePageBreak(
+                8.0 + calculateSingleWorkSectionHeight(experience[0])
+            )
+            self.sectionTitle("Experience")
+            for i, work in enumerate(experience):
+                if i != 0:
+                    self.determinePageBreak(calculateSingleWorkSectionHeight(work))
+
                 self.pdf.set_font("Helvetica", "B", 10)
-                self.pdf.cell(0, 5, job.jobTitle, ln=1, align="L")
+                self.pdf.cell(0, 5, work.jobTitle, ln=1, align="L")
                 self.pdf.set_font("Helvetica", "", 10)
-                strJobStarted = datetime.strftime(job.startedOn, self.date_format)
-                if job.currentPosition:
-                    timeframe = f"{strJobStarted} - present"
+                strWorkStarted = datetime.strftime(work.startedOn, self.date_format)
+                if work.currentPosition:
+                    timeframe = f"{strWorkStarted} - present"
                 else:
-                    timeframe = f"{strJobStarted} - {datetime.strftime(job.endedOn, self.date_format)}"
+                    timeframe = f"{strWorkStarted} - {datetime.strftime(work.endedOn, self.date_format)}"
                 self.pdf.cell(
                     0,
                     5,
-                    f"{job.company}  |  {job.companyLocation}  |  {timeframe}",
+                    f"{work.company}  |  {work.companyLocation}  |  {timeframe}",
                     ln=1,
-                    align="L"
+                    align="L",
                 )
                 self.pdf.ln(1)
-                for bullet in job.bullets:
+                for bullet in work.bullets:
                     self.bullet(bullet.text)
                 self.pdf.ln(2)
 
@@ -182,7 +235,8 @@ class PDFService:
             education (list[Education]): List of education objects.
         """
         if len(education) > 0:
-            self.section_title("Education")
+            self.determinePageBreak(8.0 + 10.0 * len(education))
+            self.sectionTitle("Education")
             for edu in education:
                 self.pdf.set_font("Helvetica", "B", 10)
                 formatted_degree = f"{edu.degreeType.name[0].upper()}{edu.degreeType.name[1:].lower()}"
@@ -209,7 +263,8 @@ class PDFService:
             certifications (list[Certificate]): List of certification objects.
         """
         if len(certifications) > 0:
-            self.section_title("Certifications")
+            self.determinePageBreak(8.0 + 5.0 * len(certifications))
+            self.sectionTitle("Certifications")
             for cert in certifications:
                 if cert.doesNotExpire:
                     str_expiration = ""
@@ -230,7 +285,8 @@ class PDFService:
             awards (list[Award]): List of award objects.
         """
         if len(awards) > 0:
-            self.section_title("Awards")
+            self.determinePageBreak(8.0 + 5.0 * len(awards))
+            self.sectionTitle("Awards")
             for award in awards:
                 self.pdf.cell(
                     0,
