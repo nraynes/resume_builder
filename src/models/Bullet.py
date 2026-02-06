@@ -13,6 +13,10 @@ class Bullet(BaseModel):
     def text(self) -> str:
         return self._text
     
+    @associatedSkills.setter
+    def associatedSkills(self, value: list[str]):
+        self._associated_skills = value
+    
     def to_dict(self) -> dict:
         return {
             "associated_skills": self._associated_skills,

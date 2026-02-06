@@ -39,7 +39,7 @@ class Experience(BaseModel):
         return self._current_position
 
     @property
-    def bullets(self) -> list[str]:
+    def bullets(self) -> list[Bullet]:
         return self._bullets
 
     def to_dict(self) -> dict:

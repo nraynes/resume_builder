@@ -3,6 +3,7 @@ from tkinter import ttk
 from tkinter import filedialog
 from src.models.Cv import Cv
 from src.models.Resume import Resume
+from src.models.Bullet import Bullet
 from src.controllers.BaseController import BaseController
 from src.gui.windows.MainWindow import MainWindow
 from src.gui.windows.EditorWindow import EditorWindow

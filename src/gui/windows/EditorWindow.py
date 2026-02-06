@@ -16,7 +16,7 @@ class EditorWindow(BaseWindow):
         master: tk.Tk,
         open_main_cb: Callable,
         save_resume_cb: Callable,
-        generate_pdf_cb: Callable
+        generate_pdf_cb: Callable,
     ):
         self._canvas = Canvas(master)
         self.save_resume_cb = save_resume_cb
@@ -34,7 +34,7 @@ class EditorWindow(BaseWindow):
             open_main_cb=open_main_cb,
             save_resume_cb=self.saveResume,
             generate_pdf_cb=self.generatePDF,
-            resize_canvas_cb=self.resizeCanvas
+            resize_canvas_cb=self.resizeCanvas,
         )
 
         self._edt_resume.pack()

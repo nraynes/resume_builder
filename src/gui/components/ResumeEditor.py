@@ -24,7 +24,7 @@ class ResumeEditor(BaseComponent):
         open_main_cb: Callable,
         save_resume_cb: Callable,
         generate_pdf_cb: Callable,
-        resize_canvas_cb: Callable
+        resize_canvas_cb: Callable,
     ):
         self._frame = Frame(master, padx=5, pady=5)
         self._is_cv = False
@@ -180,6 +180,15 @@ class ResumeEditor(BaseComponent):
 
     def updateSkillsReferenceInExperience(self):
         self._frm_experience.skills = self._frm_skills.items()
+        work_experience = self._frm_experience.items()
+        for work in work_experience:
+            for bullet in work.bullets:
+                replacement_skills_list = []
+                for skill in bullet.associatedSkills:
+                    if skill in self._frm_experience.skills:
+                        replacement_skills_list.append(skill)
+                bullet.associatedSkills = replacement_skills_list
+        self._frm_experience.populateData(work_experience)
         self.updateCoveredSkills()
 
     def populateData(self, resume: Cv):
